@@ -1,0 +1,39 @@
+# Môi trường & bí mật
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*credentials*
+*secret*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# Node
+node_modules/
+dist/
+build/
+.cache/
+
+# Dữ liệu cục bộ (không đẩy lên git)
+data/
+*.csv
+*.parquet
+*.db
+*.sqlite3
+!data/.gitkeep
+
+# IDE & hệ điều hành
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Log
+*.log
+logs/
