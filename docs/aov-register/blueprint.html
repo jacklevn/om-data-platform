@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{color-scheme:light}
+  body{margin:0;font:14px system-ui,sans-serif}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Register AOV Blueprint</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: hub truoc — 4 page dan dat xep thanh mot chuoi; spoke sau — thu vien tra cuu chia 4 nhom */
+:root{
+  --bg:#F4F6F9; --surface:#FFFFFF; --surface-2:#EDF0F5;
+  --ink:#141922; --muted-solid:#5C6678;
+  --line:#DCE1E9; --line-soft:#E9EDF3;
+  --accent:#2B55C8; --accent-soft:#E4EAFA;
+  --gold:#A8711A; --gold-soft:#F6ECD9;
+  --pos:#1C6E48; --neg:#A93520;
+  --h1:#2B55C8; --h2:#0E7C86; --h3:#7A3E9D; --h4:#A93520; --new:#A8711A;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1117; --surface:#161A22; --surface-2:#1D222C;
+    --ink:#E6EAF1; --muted-solid:#96A1B3;
+    --line:#242A35; --line-soft:#1E232D;
+    --accent:#86A4FF; --accent-soft:#1B2340;
+    --gold:#E0AC55; --gold-soft:#2C2416;
+    --pos:#56BF8C; --neg:#E8775C;
+    --h1:#86A4FF; --h2:#4FC3CE; --h3:#C48FE8; --h4:#E8775C; --new:#E0AC55;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1117; --surface:#161A22; --surface-2:#1D222C;
+  --ink:#E6EAF1; --muted-solid:#96A1B3;
+  --line:#242A35; --line-soft:#1E232D;
+  --accent:#86A4FF; --accent-soft:#1B2340;
+  --gold:#E0AC55; --gold-soft:#2C2416;
+  --pos:#56BF8C; --neg:#E8775C;
+  --h1:#86A4FF; --h2:#4FC3CE; --h3:#C48FE8; --h4:#E8775C; --new:#E0AC55;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:34px 60px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted-solid)}
+
+.hero{display:flex;flex-direction:column;gap:14px;padding-bottom:26px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(28px,5vw,42px);line-height:1.08;font-weight:700}
+.lede{max-width:64ch;color:var(--muted-solid);font-size:15.5px}
+.srcrow{display:flex;flex-wrap:wrap;gap:8px}
+.src{font-family:var(--f-mono);font-size:11.5px;padding:4px 9px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--muted-solid)}
+
+.formula{margin-top:26px;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:18px}
+.formula .eyebrow{display:block;margin-bottom:12px}
+.fline{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--f-mono);font-size:14px;line-height:2}
+.fline + .fline{margin-top:8px}
+.ft{padding:3px 8px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line-soft)}
+.ft.key{background:var(--accent-soft);border-color:transparent;color:var(--accent);font-weight:500}
+.ft.alt{background:var(--gold-soft);border-color:transparent;color:var(--gold);font-weight:500}
+.op{color:var(--muted-solid)}
+.fnote{margin-top:12px;font-size:13px;color:var(--muted-solid);max-width:72ch}
+
+.diagram{margin-top:30px}
+.diagram .eyebrow{display:block;margin-bottom:4px}
+.diagram h2{font-size:20px;margin-bottom:12px}
+.svgwrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--surface);padding:16px 14px}
+.svgwrap svg{display:block;min-width:900px;width:100%;height:auto;max-width:100%}
+.d-box{fill:var(--surface);stroke:var(--line)}
+.d-box-2{fill:var(--surface-2);stroke:none}
+.d-ink{fill:var(--ink)}
+.d-muted{fill:var(--muted-solid)}
+.d-rule{stroke:var(--line-soft)}
+.d-arrow{stroke:var(--muted-solid);fill:var(--muted-solid)}
+.d-code{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.04em}
+.d-eyebrow{font-family:var(--f-mono);font-size:10px;letter-spacing:.14em;fill:var(--muted-solid)}
+.d-title{font-family:var(--f-display);font-weight:600}
+.diagram svg text{font-family:var(--f-body)}
+
+.branches{margin-top:30px}
+.bhead{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:7px}
+.chip:hover{border-color:var(--accent)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip .n{font-family:var(--f-mono);font-size:11px;color:var(--muted-solid)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip[aria-pressed="true"] .n{color:#ffffffbb}
+.tools{display:flex;gap:8px}
+.tool{font-size:12.5px;font-family:var(--f-mono);padding:5px 10px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--muted-solid);cursor:pointer}
+.tool:hover{color:var(--ink);border-color:var(--accent)}
+.tool:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.section{margin-top:44px}
+.sechead{padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.sechead h2{font-size:23px;font-weight:700}
+.sechead .sub{font-size:13.5px;color:var(--muted-solid);margin-top:5px;max-width:76ch}
+
+.groupname{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:baseline;margin:26px 0 12px}
+.gnum{font-family:var(--f-display);font-weight:700;font-size:22px;color:var(--accent);line-height:1}
+.groupname h3{font-size:17px;font-weight:600}
+.groupname .gsub{font-size:13px;color:var(--muted-solid);margin-top:2px}
+
+.pages{display:grid;gap:14px;margin-top:14px}
+.page{background:var(--surface);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.page.hub{border-left:3px solid var(--accent)}
+.page.off{display:none}
+.ptop{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:start;padding:15px 16px;cursor:pointer;width:100%;text-align:left;background:none;border:0;font:inherit;color:inherit}
+.ptop:hover{background:var(--surface-2)}
+.ptop:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.pcodeln{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.pcode{font-family:var(--f-mono);font-size:11px;color:var(--accent);letter-spacing:.06em}
+.from{font-family:var(--f-mono);font-size:10px;letter-spacing:.04em;padding:2px 6px;border-radius:3px;background:var(--surface-2);color:var(--muted-solid);border:1px solid var(--line-soft)}
+.from.new{background:var(--gold-soft);color:var(--gold);border-color:transparent}
+.ptitle{font-family:var(--f-display);font-size:18px;font-weight:600;margin-top:3px}
+.pq{font-size:13.5px;color:var(--muted-solid);margin-top:5px;max-width:68ch}
+.ptags{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.04em;padding:3px 7px;border-radius:3px;background:var(--surface-2);color:var(--muted-solid);border:1px solid var(--line-soft)}
+.caret{font-family:var(--f-mono);font-size:11px;color:var(--muted-solid);white-space:nowrap;padding-top:4px}
+
+.pbody{border-top:1px solid var(--line-soft);padding:4px 16px 16px}
+.charts{list-style:none;margin:0;padding:0}
+.charts li{display:grid;grid-template-columns:132px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--line-soft);min-width:0}
+.charts li:last-child{border-bottom:0}
+.vis{font-family:var(--f-mono);font-size:11px;letter-spacing:.03em;color:var(--gold);background:var(--gold-soft);border-radius:3px;padding:3px 7px;justify-self:start;height:fit-content}
+.cmain{min-width:0}
+.cname{font-weight:500;font-size:14.5px}
+.cfield{font-family:var(--f-mono);font-size:12px;color:var(--muted-solid);margin-top:4px;word-break:break-word;line-height:1.7}
+.cfield b{color:var(--ink);font-weight:500}
+.pnote{margin-top:12px;font-size:12.5px;color:var(--muted-solid);background:var(--surface-2);border-left:2px solid var(--gold);padding:9px 12px;border-radius:0 4px 4px 0}
+.jumps{margin-top:14px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.jumps .eyebrow{display:block;margin-bottom:8px}
+.jumprow{display:flex;flex-wrap:wrap;gap:7px}
+.jump{font-family:var(--f-mono);font-size:11.5px;padding:4px 9px;border-radius:4px;background:var(--accent-soft);color:var(--accent);border:0;cursor:pointer}
+.jump:hover{background:var(--accent);color:#fff}
+.jump:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.map{margin-top:46px;border-top:2px solid var(--ink);padding-top:20px}
+.tablewrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:520px}
+th,td{text-align:left;padding:9px 13px;border-bottom:1px solid var(--line-soft)}
+th{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-solid);background:var(--surface-2)}
+tr:last-child td{border-bottom:0}
+td.code{font-family:var(--f-mono);font-size:12px;color:var(--accent);white-space:nowrap}
+td.newcell{color:var(--gold);font-weight:500}
+
+.notes{margin-top:46px;border-top:2px solid var(--ink);padding-top:20px}
+.notegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 15px}
+.note h3{font-size:14.5px;font-weight:600;margin-bottom:6px}
+.note p{font-size:13px;color:var(--muted-solid)}
+.note code,.map code{font-family:var(--f-mono);font-size:11.5px;background:var(--surface-2);padding:1px 4px;border-radius:3px;color:var(--ink)}
+.ok{color:var(--pos);font-weight:500}
+.no{color:var(--neg);font-weight:500}
+
+footer{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted-solid)}
+.flash{animation:fl 1.6s ease-out}
+@keyframes fl{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+
+@media (max-width:620px){
+  .charts li{grid-template-columns:1fr;gap:6px}
+  .ptop{grid-template-columns:1fr}
+  .caret{display:none}
+  .groupname{grid-template-columns:26px 1fr;gap:9px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <span class="eyebrow">Power BI report blueprint &middot; AOV VN &middot; Online Marketing</span>
+    <h1>Làm thế nào để tăng Register của AOV?</h1>
+    <p class="lede">17 page theo mô hình hub and spoke: <b>4 page hub</b> dẫn người đọc đi đúng thứ tự suy luận, <b>13 page spoke</b> là thư viện tra cứu theo metric và theo chiều cắt. Giữ gần như trọn vẹn 13 page của bản draft, bù 5 lỗ hổng so với logic tree, và chỉ dùng field có thật trong semantic model.</p>
+    <div class="srcrow">
+      <span class="src">Logic tree: OM Logic Tree v4 - Final</span>
+      <span class="src">Model: [ODP] Model / AOV VN - OM</span>
+      <span class="src">Fact: Latte_db + ads_manager</span>
+      <span class="src">Scope: UA paid + Organic</span>
+    </div>
+  </header>
+
+  <section class="formula">
+    <span class="eyebrow">Xương sống — nhánh 5 Algebra</span>
+    <div class="fline">
+      <span class="ft key">Register</span><span class="op">=</span>
+      <span class="ft">Install</span><span class="op">×</span><span class="ft">Register Rate</span>
+      <span class="op">=</span>
+      <span class="ft">( Spend</span><span class="op">÷</span><span class="ft">CPI )</span><span class="op">×</span><span class="ft">Register Rate</span>
+    </div>
+    <div class="fline">
+      <span class="ft key">Register tổng</span><span class="op">=</span>
+      <span class="ft alt">OM (paid)</span><span class="op">+</span><span class="ft alt">organic</span><span class="op">+</span><span class="ft alt">organicA</span>
+      <span class="op">;</span>
+      <span class="ft">CPR</span><span class="op">=</span><span class="ft">Spend ÷ Register</span><span class="op">=</span><span class="ft">CPI ÷ Register Rate</span>
+    </div>
+    <p class="fnote">Ba đòn bẩy duy nhất của Register là <b>Spend</b>, <b>CPI</b> và <b>Register Rate</b>. Hub trả lời cái nào đang đổi và đổi bao nhiêu; spoke trả lời đổi ở đâu và vì sao. Mọi page đều tách <code>media_group</code> vì trong 3 tháng gần nhất organic chiếm phần lớn Register.</p>
+  </section>
+
+  <section class="diagram">
+    <span class="eyebrow">Sơ đồ cấu trúc</span>
+    <h2>Hub and spoke — 17 page</h2>
+    <div class="svgwrap">
+      <svg viewBox="0 0 1100 450" role="img" aria-label="Sơ đồ hub and spoke: 4 page hub dẫn dắt phía trên, 13 page spoke chia 4 nhóm phía dưới">
+        <defs>
+          <marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 z" class="d-arrow" stroke="none"/>
+          </marker>
+        </defs>
+
+        <rect x="300" y="6" width="520" height="40" rx="8" class="d-box"/>
+        <text x="560" y="31" text-anchor="middle" font-size="14.5" font-weight="600" class="d-ink">Làm thế nào để tăng Register của AOV?</text>
+        <line x1="560" y1="46" x2="560" y2="60" class="d-arrow" stroke-width="1.2" marker-end="url(#ah)"/>
+
+        <text x="40" y="74" class="d-eyebrow">HUB · 4 PAGE DẪN DẮT · ĐỌC THEO THỨ TỰ</text>
+
+        <rect x="40" y="82" width="240" height="84" rx="7" class="d-box"/>
+        <rect x="54" y="96" width="10" height="10" rx="2" fill="var(--h1)"/>
+        <text x="70" y="105" class="d-code" fill="var(--h1)">H1</text>
+        <text x="54" y="128" class="d-title" font-size="15" fill="var(--ink)">Tổng quan</text>
+        <text x="54" y="148" font-size="11.5" class="d-muted">Đang ở đâu so với target</text>
+
+        <rect x="300" y="82" width="240" height="84" rx="7" class="d-box"/>
+        <rect x="314" y="96" width="10" height="10" rx="2" fill="var(--h2)"/>
+        <text x="330" y="105" class="d-code" fill="var(--h2)">H2</text>
+        <rect x="494" y="92" width="34" height="15" rx="3" fill="var(--gold-soft)"/>
+        <text x="511" y="103" text-anchor="middle" font-size="9" class="d-code" fill="var(--new)">MỚI</text>
+        <text x="314" y="128" class="d-title" font-size="15" fill="var(--ink)">Phân rã</text>
+        <text x="314" y="148" font-size="11.5" class="d-muted">Spend, CPI hay Register Rate</text>
+
+        <rect x="560" y="82" width="240" height="84" rx="7" class="d-box"/>
+        <rect x="574" y="96" width="10" height="10" rx="2" fill="var(--h3)"/>
+        <text x="590" y="105" class="d-code" fill="var(--h3)">H3</text>
+        <text x="574" y="128" class="d-title" font-size="15" fill="var(--ink)">Chẩn đoán</text>
+        <text x="574" y="148" font-size="11.5" class="d-muted">Bốn bước truy nguyên nhân</text>
+
+        <rect x="820" y="82" width="240" height="84" rx="7" class="d-box"/>
+        <rect x="834" y="96" width="10" height="10" rx="2" fill="var(--h4)"/>
+        <text x="850" y="105" class="d-code" fill="var(--h4)">H4</text>
+        <rect x="1014" y="92" width="34" height="15" rx="3" fill="var(--gold-soft)"/>
+        <text x="1031" y="103" text-anchor="middle" font-size="9" class="d-code" fill="var(--new)">MỚI</text>
+        <text x="834" y="128" class="d-title" font-size="15" fill="var(--ink)">Cơ hội</text>
+        <text x="834" y="148" font-size="11.5" class="d-muted">Tăng tiếp ở đâu thì rẻ nhất</text>
+
+        <line x1="282" y1="124" x2="294" y2="124" class="d-arrow" stroke-width="1.2" marker-end="url(#ah)"/>
+        <line x1="542" y1="124" x2="554" y2="124" class="d-arrow" stroke-width="1.2" marker-end="url(#ah)"/>
+        <line x1="802" y1="124" x2="814" y2="124" class="d-arrow" stroke-width="1.2" marker-end="url(#ah)"/>
+
+        <rect x="40" y="180" width="1020" height="26" rx="6" class="d-box-2"/>
+        <text x="560" y="197" text-anchor="middle" font-size="11.5" class="d-muted">Mỗi hub có nút nhảy thẳng xuống các spoke được đánh dấu bên dưới</text>
+        <path d="M154,208 L166,208 L160,215 z" class="d-arrow" stroke="none"/>
+        <path d="M414,208 L426,208 L420,215 z" class="d-arrow" stroke="none"/>
+        <path d="M674,208 L686,208 L680,215 z" class="d-arrow" stroke="none"/>
+        <path d="M934,208 L946,208 L940,215 z" class="d-arrow" stroke="none"/>
+
+        <text x="40" y="232" class="d-eyebrow">SPOKE · 13 PAGE TRA CỨU</text>
+
+        <rect x="40" y="240" width="240" height="130" rx="7" class="d-box"/>
+        <text x="54" y="262" class="d-title" font-size="13.5" fill="var(--ink)">A · Metric</text>
+        <line x1="41" y1="270" x2="279" y2="270" class="d-rule"/>
+        <text x="54" y="294" class="d-code" fill="var(--muted-solid)">S1</text><text x="82" y="294" font-size="12" class="d-ink">Spend và CPR</text>
+        <rect x="244" y="285" width="9" height="9" rx="2" fill="var(--h1)"/><rect x="256" y="285" width="9" height="9" rx="2" fill="var(--h2)"/>
+        <text x="54" y="322" class="d-code" fill="var(--muted-solid)">S2</text><text x="82" y="322" font-size="12" class="d-ink">CPI và Install</text>
+        <rect x="232" y="313" width="9" height="9" rx="2" fill="var(--h1)"/><rect x="244" y="313" width="9" height="9" rx="2" fill="var(--h2)"/><rect x="256" y="313" width="9" height="9" rx="2" fill="var(--h3)"/>
+        <text x="54" y="350" class="d-code" fill="var(--muted-solid)">S3</text><text x="82" y="350" font-size="12" class="d-ink">Register Rate</text>
+        <rect x="232" y="341" width="9" height="9" rx="2" fill="var(--h1)"/><rect x="244" y="341" width="9" height="9" rx="2" fill="var(--h2)"/><rect x="256" y="341" width="9" height="9" rx="2" fill="var(--h3)"/>
+
+        <rect x="300" y="240" width="240" height="158" rx="7" class="d-box"/>
+        <text x="314" y="262" class="d-title" font-size="13.5" fill="var(--ink)">B · Chiều cắt</text>
+        <line x1="301" y1="270" x2="539" y2="270" class="d-rule"/>
+        <text x="314" y="294" class="d-code" fill="var(--muted-solid)">S4</text><text x="342" y="294" font-size="12" class="d-ink">Kênh và OS</text>
+        <rect x="504" y="285" width="9" height="9" rx="2" fill="var(--h3)"/><rect x="516" y="285" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="314" y="322" class="d-code" fill="var(--muted-solid)">S5</text><text x="342" y="322" font-size="12" class="d-ink">Campaign</text>
+        <rect x="504" y="313" width="9" height="9" rx="2" fill="var(--h3)"/><rect x="516" y="313" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="314" y="350" class="d-code" fill="var(--muted-solid)">S6</text><text x="342" y="350" font-size="12" class="d-ink">Creative và Ad</text>
+        <rect x="504" y="341" width="9" height="9" rx="2" fill="var(--h3)"/><rect x="516" y="341" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="314" y="378" class="d-code" fill="var(--new)">S7</text><text x="342" y="378" font-size="12" class="d-ink">Paid và Organic</text>
+        <rect x="504" y="369" width="9" height="9" rx="2" fill="var(--h1)"/><rect x="516" y="369" width="9" height="9" rx="2" fill="var(--h2)"/>
+
+        <rect x="560" y="240" width="240" height="158" rx="7" class="d-box"/>
+        <text x="574" y="262" class="d-title" font-size="13.5" fill="var(--ink)">C · Chuỗi và chất lượng</text>
+        <line x1="561" y1="270" x2="799" y2="270" class="d-rule"/>
+        <text x="574" y="294" class="d-code" fill="var(--new)">S8</text><text x="602" y="294" font-size="12" class="d-ink">Funnel UA</text>
+        <rect x="776" y="285" width="9" height="9" rx="2" fill="var(--h3)"/>
+        <text x="574" y="322" class="d-code" fill="var(--muted-solid)">S9</text><text x="602" y="322" font-size="12" class="d-ink">Retention</text>
+        <rect x="776" y="313" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="574" y="350" class="d-code" fill="var(--muted-solid)">S10</text><text x="602" y="350" font-size="12" class="d-ink">Doanh thu và ROAS</text>
+        <rect x="776" y="341" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="574" y="378" class="d-code" fill="var(--new)">S11</text><text x="602" y="378" font-size="12" class="d-ink">So kỳ và mùa vụ</text>
+        <rect x="776" y="369" width="9" height="9" rx="2" fill="var(--h3)"/>
+
+        <rect x="820" y="240" width="240" height="102" rx="7" class="d-box"/>
+        <text x="834" y="262" class="d-title" font-size="13.5" fill="var(--ink)">D · Hành động</text>
+        <line x1="821" y1="270" x2="1059" y2="270" class="d-rule"/>
+        <text x="834" y="294" class="d-code" fill="var(--muted-solid)">S12</text><text x="862" y="294" font-size="12" class="d-ink">Đòn bẩy và theo dõi</text>
+        <rect x="1036" y="285" width="9" height="9" rx="2" fill="var(--h4)"/>
+        <text x="834" y="322" class="d-code" fill="var(--new)">S13</text><text x="862" y="322" font-size="12" class="d-ink">Cách đọc report</text>
+        <rect x="1036" y="313" width="9" height="9" rx="2" fill="var(--h1)"/>
+
+        <rect x="40" y="420" width="10" height="10" rx="2" fill="var(--h1)"/>
+        <text x="56" y="429" font-size="11.5" class="d-muted">H1 Tổng quan</text>
+        <rect x="190" y="420" width="10" height="10" rx="2" fill="var(--h2)"/>
+        <text x="206" y="429" font-size="11.5" class="d-muted">H2 Phân rã</text>
+        <rect x="330" y="420" width="10" height="10" rx="2" fill="var(--h3)"/>
+        <text x="346" y="429" font-size="11.5" class="d-muted">H3 Chẩn đoán</text>
+        <rect x="480" y="420" width="10" height="10" rx="2" fill="var(--h4)"/>
+        <text x="496" y="429" font-size="11.5" class="d-muted">H4 Cơ hội</text>
+        <text x="630" y="429" font-size="11.5" fill="var(--new)">Mã page màu vàng = page mới so với bản draft</text>
+      </svg>
+    </div>
+  </section>
+
+  <section class="branches">
+    <div class="bhead">
+      <div>
+        <span class="eyebrow">Độ phủ 6 nhánh logic tree</span>
+        <p style="font-size:13.5px;color:var(--muted-solid);margin-top:4px">Bấm một nhánh để chỉ xem những page phục vụ nhánh đó.</p>
+      </div>
+      <div class="tools">
+        <button class="tool" id="expandAll" type="button">Mở tất cả</button>
+        <button class="tool" id="collapseAll" type="button">Thu gọn</button>
+      </div>
+    </div>
+    <div class="chiprow" id="branchChips"></div>
+  </section>
+
+  <section class="section" id="hub-section">
+    <div class="sechead">
+      <span class="eyebrow">Hub &middot; 4 page</span>
+      <h2>Đường dẫn — đọc theo thứ tự này</h2>
+      <p class="sub">Bốn page nối thành một mạch: biết mức hiện tại → biết cái gì đổi và đổi bao nhiêu → biết vì sao → biết tăng tiếp ở đâu. Mỗi page kết thúc bằng một hàng nút nhảy thẳng sang đúng spoke cần soi. Đây cũng là bộ page để chụp màn hình gửi stakeholder.</p>
+    </div>
+    <div class="pages" id="hubPages"></div>
+  </section>
+
+  <section class="section" id="spoke-section">
+    <div class="sechead">
+      <span class="eyebrow">Spoke &middot; 13 page</span>
+      <h2>Thư viện — mở ra khi cần số chi tiết</h2>
+      <p class="sub">Giữ nguyên trục metric-first của bản draft, vì đây là chỗ metric-first thắng: ai cần CPI thì vào thẳng page CPI. Mỗi spoke có thêm một card quy đổi tác động của nó ra Register, để một page lẻ vẫn trả lời được câu hỏi lớn.</p>
+    </div>
+    <div id="spokeGroups"></div>
+  </section>
+
+  <section class="map">
+    <span class="eyebrow">Đối chiếu với bản draft</span>
+    <h2 style="font-size:20px;margin-top:6px">13 page cũ đi về đâu</h2>
+    <p style="font-size:13.5px;color:var(--muted-solid);margin-top:6px;max-width:74ch">Không page nào của draft bị bỏ. Bốn page mới bù đúng bốn lỗ hổng so với logic tree, cộng một page hướng dẫn đọc.</p>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Page trong draft</th><th>Thành</th><th>Thay đổi</th></tr></thead>
+        <tbody id="mapBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="notes">
+    <span class="eyebrow">Ghi chú dữ liệu — đã kiểm tra trực tiếp trên model</span>
+    <h2 style="font-size:20px;margin-top:6px">Những điều cần biết trước khi dựng</h2>
+    <div class="notegrid">
+      <div class="note">
+        <h3>Độ phủ thời gian</h3>
+        <p><code>Latte_db</code> từ 01/01/2024 đến D-1. <code>ads_manager</code> từ 01/01/2025. Bảng <code>Date</code> chạy tới 31/12/2026, nên so cùng kỳ năm trước <span class="ok">dùng được</span> cho Register, CPR, R7.</p>
+      </div>
+      <div class="note">
+        <h3>Impression và Click chỉ có 3 kênh</h3>
+        <p><code>ads_manager</code> chỉ có <code>facebook ads</code>, <code>googleadwords_int</code>, <code>tiktokglobal_int</code>. Appier, Moloco, Apple Search Ads, Oppo <span class="no">không có</span> Impression / Click / CTR / CPM. Funnel đầy đủ chỉ vẽ được cho 3 kênh này.</p>
+      </div>
+      <div class="note">
+        <h3>Hai bảng fact chỉ nối qua Date</h3>
+        <p><code>ads_manager</code> và <code>Latte_db</code> không có quan hệ ở mức campaign. Một slicer kênh sẽ không lọc đồng thời cả hai. Page funnel vì vậy để slicer riêng cho mỗi bảng, hoặc đọc ở mức tổng theo ngày.</p>
+      </div>
+      <div class="note">
+        <h3>Age, Gender, Audience không dùng được</h3>
+        <p>Ba cột này là mảnh vỡ khi tách tên campaign (<code>"1865"</code>, <code>"A"</code>, <code>"CA0007"</code>) và trên 97% để trống. <span class="no">Rà lại draft</span> và bỏ mọi visual đang dùng chúng làm nhân khẩu học.</p>
+      </div>
+      <div class="note">
+        <h3>Quy ước tên campaign là mỏ vàng</h3>
+        <p>Dạng <code>AOV-VN-MAIA-AND-0429-06JUN25-FANART+COMIC</code> chứa loại campaign, OS, ngày bắt đầu và chủ đề. Spoke Campaign và Creative đọc trực tiếp từ đây; muốn cắt theo chủ đề thì thêm một calculated column tách chuỗi.</p>
+      </div>
+      <div class="note">
+        <h3>Banner filter context trên mọi page</h3>
+        <p>Model đã có sẵn <code>AllFiltersText</code>. Đặt làm một card nhỏ ở đầu mỗi page để mọi ảnh chụp màn hình đều tự ghi rõ đang lọc gì — tránh stakeholder đọc nhầm phạm vi.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>Bước 1 của kế hoạch: sơ đồ page và chart. Bước tiếp theo là chốt sơ đồ này, rồi dựng report trên semantic model AOV VN - OM.</footer>
+</div>
+
+<script>
+const BRANCHES = {
+  seg:  {label:"1 · Segmentation"},
+  opp:  {label:"2 · Opposite words"},
+  proc: {label:"3 · Process"},
+  conc: {label:"4 · Conceptual"},
+  alg:  {label:"5 · Algebra"},
+  act:  {label:"6 · Action levers"}
+};
+
+const HUB = [
+  {code:"H1", title:"Tổng quan Register", from:"Draft page 1", tags:["alg","seg"],
+   q:"Register đang bao nhiêu, so target và so hôm qua thế nào, phần nào là của paid?",
+   jumps:["S1","S2","S3","S7","S13"],
+   charts:[
+    {v:"Banner", n:"Ngữ cảnh lọc hiện tại, có mặt trên mọi page", f:"<b>AllFiltersText</b> · đặt sát mép trên để lọt vào mọi ảnh chụp màn hình"},
+    {v:"Card × 7", n:"Dải KPI chính", f:"<b>Register</b> · <b>CPR</b> · <b>Spending UA</b> · <b>Install</b> · <b>Register Rate</b> · <b>R7 new user</b> · <b>% finish Register OM_MS</b>"},
+    {v:"Matrix", n:"Bảng Daily Performance có sẵn trong model", f:"Rows <b>Perf Metric[Metric]</b> · Values <b>Perf Actual</b>, <b>Perf Target</b>, <b>Perf vs Target</b>, <b>Perf D-1</b>, <b>Perf vs D-1</b>"},
+    {v:"Combo", n:"Register theo ngày, CPR chạy đè lên", f:"Axis <b>Date[Date]</b> · Column <b>Register</b> · Line <b>CPR</b> + <b>CPR Target</b>"},
+    {v:"Stacked area", n:"Register tách paid và organic theo tuần", f:"Axis <b>Date[Week]</b> · Legend <b>Latte_db[media_group]</b> · Value <b>Register</b>"},
+    {v:"Gauge", n:"Tiến độ tháng", f:"<b>UTD Monthly Register</b> / <b>Monthly Register</b> · callout <b>% finish UTD Register</b>"},
+    {v:"Line", n:"So cùng kỳ năm trước", f:"<b>Register</b> vs <b>Register Last Year</b> · <b>CPR</b> vs <b>CPR Last Year</b>"},
+    {v:"Slicer", n:"Bộ lọc gốc, sync sang toàn bộ 17 page", f:"<b>Date[Date]</b> · <b>Time Intelligent</b> · <b>media_group</b> · <b>media_source</b> · <b>OS</b> · <b>is_retarget_name</b>"}
+   ]},
+  {code:"H2", title:"Phân rã Register", from:"Mới", tags:["alg","opp"],
+   q:"Register đổi là do Spend, do CPI hay do Register Rate — và mỗi cái đóng góp bao nhiêu?",
+   jumps:["S1","S2","S3","S7"],
+   charts:[
+    {v:"Waterfall", n:"Δ Register tách theo ba thành phần", f:"Cần 3 measure mới: Δ từ Spend · Δ từ CPI · Δ từ Register Rate (so kỳ trước hoặc L7D)"},
+    {v:"Matrix", n:"Bảng so kỳ theo kênh, đủ 5 cột biến động", f:"Rows <b>media_source</b> · <b>% change in spending</b>, <b>% change CPI vs. L7D</b>, <b>% change in Install</b>, <b>% change Register Rate</b>, <b>% change in Register</b>"},
+    {v:"Decomp tree", n:"Bổ Register xuống tận campaign", f:"<b>Register</b> → media_group → media_source → OS → is_retarget_name → Campaign"},
+    {v:"Line (2 trục)", n:"CPI và Register Rate chạy song song", f:"Axis <b>Date[Date]</b> · Y1 <b>CPI</b> · Y2 <b>Register Rate</b>"},
+    {v:"Bar", n:"Kênh nào đóng góp nhiều nhất vào Δ Register", f:"Register kỳ này − kỳ trước, theo <b>media_source</b>, xếp từ kéo lên tới kéo xuống"},
+    {v:"Card + Text", n:"Kiểm tra đồng nhất số học", f:"%ΔInstall ≈ %ΔSpend − %ΔCPI · lệch nhiều là dấu hiệu lỗi tracking"}
+   ],
+   note:"Đây là page quan trọng nhất của mô hình này: nó đặt ba metric cạnh nhau trên một màn hình với cùng một kỳ so sánh — đúng cái mà cách chia một metric một page không làm được."},
+  {code:"H3", title:"Chẩn đoán", from:"Draft page 11 + 12", tags:["opp","proc","act"],
+   q:"Register lệch là vì đâu — đi theo một đường cố định thay vì mò?",
+   jumps:["S2","S3","S4","S5","S6","S8","S11"],
+   charts:[
+    {v:"Bước 1 · Card + Line", n:"Install có đổi không", f:"<b>Install</b> · <b>% change in Install</b> · line <b>Install</b> và <b>Spending UA</b> theo ngày"},
+    {v:"Bước 2 · Card + Bar", n:"Do Spend hay do CPI", f:"<b>% change in spending</b> vs <b>% change CPI vs. L7D</b> · bar đóng góp theo <b>media_source</b>"},
+    {v:"Bước 3 · Line", n:"CPI tăng vì CPM đắt hay vì CTR tụt", f:"<b>CPM</b> và <b>CTR</b> theo ngày, legend kênh"},
+    {v:"Bước 4 · Bar + Line", n:"Register Rate theo OS — bắt lỗi luồng đăng nhập hoặc bảo trì", f:"<b>Register Rate</b> theo <b>OS</b> và theo <b>Date[Date]</b>"},
+    {v:"Matrix", n:"Bảng cờ đỏ: segment nào lệch quá ngưỡng", f:"Rows <b>media_source</b> × <b>OS</b> · màu theo <b>Spend vs Tgt Color</b>, <b>Reg vs Tgt Color</b>, <b>CPR vs Tgt Color</b>"},
+    {v:"Heatmap", n:"Mẫu theo thứ trong tuần", f:"Rows <b>Date[Weekday]</b> · Cols <b>Date[WeekNo]</b> · Value <b>Register</b>"},
+    {v:"Text", n:"Một dòng kết luận viết tay", f:"Ô trống để người phân tích gõ kết luận trước khi chụp màn hình"}
+   ],
+   note:"Bố cục bốn bước đi từ trái sang phải, có mũi tên nối. Gộp hai page Nguyên nhân và Chẩn đoán của draft, vì tách ra thì người đọc phải nhớ số qua hai lần bấm."},
+  {code:"H4", title:"Cơ hội và headroom", from:"Mới", tags:["act","alg","seg"],
+   q:"Thêm Register tiếp theo rẻ nhất nằm ở đâu?",
+   jumps:["S4","S5","S6","S9","S10","S12"],
+   charts:[
+    {v:"Scatter 4 góc", n:"Bản đồ cơ hội theo segment", f:"X <b>CPR</b> · Y <b>Register</b> · reference <b>CPR Target</b> và median · segment = media_source × OS × is_retarget_name"},
+    {v:"Table", n:"Segment rẻ nhưng share spend còn thấp", f:"<b>CPR</b> < <b>CPR Target</b> · share <b>Spending UA</b> · khoảng trống có thể scale"},
+    {v:"Scatter + trend", n:"Đường bão hoà: scale tới đâu thì CPR bắt đầu tăng", f:"Mỗi điểm một ngày · X <b>Spending UA</b> · Y <b>CPR</b> · tách theo kênh"},
+    {v:"What-if", n:"Thêm X đô thì thêm bao nhiêu Register", f:"Parameter budget tăng thêm × CPR hiện tại của segment được chọn"},
+    {v:"Bar", n:"Khoảng cách còn lại tới target", f:"<b>Register Target</b> − <b>Register</b> theo tháng, và số ngày còn lại"},
+    {v:"Table", n:"Thử dịch mix", f:"Dịch 10% budget từ kênh CPR cao sang kênh CPR thấp → Δ Register ước tính"}
+   ],
+   note:"Page này trả lời trực tiếp câu hỏi lớn. Draft có page Đòn bẩy cho tình huống hỏng, nhưng chưa có page cho tình huống muốn tăng khi mọi thứ vẫn đang chạy bình thường."}
+];
+
+const GROUPS = [
+  {n:"A", title:"Metric", sub:"Ba thành phần của công thức, mỗi cái một page — giữ nguyên cách chia của draft.",
+   pages:[
+    {code:"S1", title:"Spend và CPR", from:"Draft page 2 + 3", tags:["alg","act"],
+     q:"Tiêu bao nhiêu, còn bao nhiêu budget, và mỗi Register đang tốn bao nhiêu?",
+     charts:[
+      {v:"Card × 6", n:"Ngân sách và hiệu quả", f:"<b>Spending UA</b> · <b>Budget UA</b> · <b>Budget left</b> · <b>% finish UTD UA Spending budget</b> · <b>CPR</b> · <b>CPR Target</b>"},
+      {v:"Line", n:"Pacing: tiêu lũy kế so với budget tháng", f:"<b>Cumulative Spend</b> vs <b>UA Monthly Budget</b> · đường tiêu lý tưởng theo <b>%DaysToToday</b>"},
+      {v:"Combo", n:"Spend theo ngày, CPR đè lên", f:"Column <b>Spending UA</b> · Line <b>CPR</b> + <b>CPR Target</b>"},
+      {v:"Matrix", n:"Theo kênh, có cột biến động", f:"Rows <b>media_source</b> · <b>Spending UA</b>, <b>% change Spending UA vs. L7D</b>, <b>CPR</b>, <b>% change CPR vs. L7D</b>"},
+      {v:"Table", n:"Kế hoạch budget từng campaign", f:"<b>OP Spending</b> · <b>OP Daily Budget</b> · <b>OP New Daily Budget</b> · <b>OP Status Update</b> (bảng Sample plan)"},
+      {v:"Bar", n:"Tách post boosting khỏi UA", f:"<b>Spending UA</b> vs <b>Spending PB</b> theo tuần"},
+      {v:"Card", n:"Quy đổi ra Register", f:"Spend ±X% ⇒ ±N Register ở mức CPR hiện tại"}
+     ]},
+    {code:"S2", title:"CPI và Install", from:"Draft page 4", tags:["alg","conc"],
+     q:"Mua một install đang đắt hay rẻ, và đắt lên vì CPM hay vì CTR?",
+     charts:[
+      {v:"Card × 5", n:"Mức và biến động", f:"<b>Install</b> · <b>CPI</b> · <b>CPI cap</b> · <b>% change CPI vs. L7D</b> · <b>Install L7D</b>"},
+      {v:"Line", n:"CPI theo ngày, có trần", f:"<b>CPI</b> · reference line <b>CPI cap</b> · legend <b>media_source</b>"},
+      {v:"Matrix", n:"Kênh × OS", f:"<b>Install</b>, <b>CPI</b>, <b>Spending UA</b>"},
+      {v:"Scatter", n:"Tiêu nhiều có làm CPI đắt lên không", f:"X <b>Spending UA</b> · Y <b>CPI</b> · Size <b>Install</b> · mỗi điểm một ngày"},
+      {v:"Line", n:"Hai nguồn gốc của CPI", f:"<b>CPM</b> và <b>CTR</b> theo ngày — chỉ 3 kênh có dữ liệu"},
+      {v:"Bar", n:"Install theo loại campaign", f:"<b>Install</b> theo <b>is_retarget_name</b> (MAIA / MAEA / PB / Others)"},
+      {v:"Card", n:"Quy đổi ra Register", f:"CPI ±X% ⇒ ±N Register ở cùng mức budget"}
+     ]},
+    {code:"S3", title:"Register Rate", from:"Draft page 5", tags:["alg","proc"],
+     q:"Trong số install mua về, bao nhiêu thực sự đăng ký — và chỗ nào đang rơi?",
+     charts:[
+      {v:"Card × 5", n:"Mức và biến động", f:"<b>Register Rate</b> · <b>Register Rate L7D</b> · <b>% change Register Rate</b> · <b>Register Rate D-1</b> · <b>Register Rate Δpp</b>"},
+      {v:"Line", n:"Theo ngày, tách OS — nơi lộ lỗi luồng đăng nhập", f:"<b>Register Rate</b> · Legend <b>OS</b>"},
+      {v:"Matrix", n:"Kênh × OS", f:"<b>Install</b>, <b>Register</b>, <b>Register Rate</b>"},
+      {v:"Bar", n:"Paid so với organic", f:"<b>Register Rate</b> theo <b>media_group</b> — chất lượng traffic mua về"},
+      {v:"Line", n:"Nền dài hạn", f:"<b>Register Rate</b> theo tháng từ 2024 — dịch chuyển nền hay biến động ngắn hạn"},
+      {v:"Table", n:"Campaign có tỉ lệ thấp bất thường", f:"<b>Campaign</b> · <b>Install</b> · <b>Register Rate</b> · chênh so với trung bình kênh"},
+      {v:"Card", n:"Quy đổi ra Register", f:"Register Rate ±X pp ⇒ ±N Register ở cùng mức install"}
+     ]}
+   ]},
+  {n:"B", title:"Chiều cắt", sub:"Biến động tập trung ở đâu — nhánh 1 Segmentation.",
+   pages:[
+    {code:"S4", title:"Kênh và OS", from:"Draft page 6", tags:["seg","alg"],
+     q:"Kênh nào, OS nào đang kéo Register lên hoặc xuống, và kênh nào còn rẻ?",
+     charts:[
+      {v:"Matrix", n:"Bảng xương sống kênh × OS", f:"Rows <b>media_source</b> · Cols <b>OS</b> · <b>Spending UA</b>, <b>Install</b>, <b>CPI</b>, <b>Register</b>, <b>Register Rate</b>, <b>CPR</b>"},
+      {v:"Bar", n:"Đóng góp vào Δ Register theo kênh", f:"Register kỳ này − kỳ trước, xếp từ kéo lên tới kéo xuống"},
+      {v:"Scatter", n:"Bản đồ rẻ – đắt – to – nhỏ", f:"X <b>Spending UA</b> · Y <b>CPR</b> · Size <b>Register</b> · reference <b>CPR Target</b>"},
+      {v:"100% bar × 2", n:"Mix effect: share Spend so với share Register", f:"Hai cột 100% cạnh nhau theo <b>media_source</b>"},
+      {v:"Small multiples", n:"CPR từng kênh theo ngày", f:"Line <b>CPR</b> · mỗi ô một <b>media_source</b>"},
+      {v:"Bar + Line", n:"Android và iOS khác nhau chỗ nào", f:"<b>Register</b> theo <b>OS</b> · overlay <b>Register Rate</b> và <b>CPI</b>"}
+     ]},
+    {code:"S5", title:"Campaign", from:"Draft page 7", tags:["seg","act"],
+     q:"Campaign nào nên scale, campaign nào nên sửa hoặc tắt?",
+     charts:[
+      {v:"Table", n:"Bảng campaign đầy đủ, có data bar và ngưỡng", f:"<b>Campaign</b> · <b>Spending UA</b> · <b>Install</b> · <b>CPI</b> vs <b>CPI cap</b> · <b>Register</b> · <b>Register Rate</b> · <b>CPR</b> vs <b>CPR Target</b>"},
+      {v:"Bar × 2", n:"Top 10 campaign tăng Register và Top 10 giảm", f:"Δ Register so kỳ trước, theo <b>Campaign</b>"},
+      {v:"Scatter 4 góc", n:"Scale / Giữ / Sửa / Tắt", f:"X <b>Spending UA</b> · Y <b>CPR</b> · reference <b>CPR Target</b> và median spend"},
+      {v:"Decomp tree", n:"Đi từ Register xuống Adset và Ad", f:"<b>Register</b> → Campaign → Adset → Ad"},
+      {v:"Line", n:"Số campaign đang chạy theo ngày", f:"DistinctCount <b>ads_manager[campaign_id]</b> lọc <b>status = ACTIVE</b>"},
+      {v:"Matrix", n:"Tách theo loại campaign", f:"Rows <b>is_retarget_name</b> · Spend, Register, CPR"}
+     ]},
+    {code:"S6", title:"Creative và Ad", from:"Draft page 8", tags:["seg","conc"],
+     q:"Creative nào còn chạy tốt, creative nào đã mệt, tuần này ra được bao nhiêu creative mới?",
+     charts:[
+      {v:"Table", n:"Bảng ad-level", f:"<b>Ad</b> · <b>Campaign</b> · <b>Impression</b> · <b>Click</b> · <b>CTR</b> · <b>Install</b> · <b>CPI</b> · <b>Register</b> · <b>CPR</b>"},
+      {v:"Line", n:"Đường mệt mỏi của creative theo tuổi", f:"X = số ngày kể từ <b>ads_manager[start_date]</b> · Y <b>CTR</b> và CVR (Install ÷ Click)"},
+      {v:"Bar", n:"Số creative mới mỗi tuần", f:"DistinctCount <b>Latte_db[Ad Id]</b> xuất hiện lần đầu trong tuần"},
+      {v:"Scatter", n:"Creative hút click hay hút install", f:"X <b>CTR</b> · Y CVR click→install · Size <b>Spending UA</b>"},
+      {v:"Matrix", n:"Vòng đời: Ad × tuần", f:"Rows <b>Ad</b> · Cols <b>Date[Week]</b> · Value <b>Register</b> · heat màu"},
+      {v:"Card", n:"Giá đầu vào của creative", f:"<b>CPM</b> · <b>CPV (6s)</b> · <b>CPE</b> so với <b>CPV benchmark</b>, <b>CPE benchmark</b>"}
+     ],
+     note:"Nhiều dòng Latte_db có Ad rỗng, nhất là Facebook và Google. Khi Ad rỗng thì đọc ở mức Campaign; chỉ Moloco và một số kênh trả về tên file creative đầy đủ."},
+    {code:"S7", title:"Paid và Organic", from:"Mới", tags:["seg","alg","conc"],
+     q:"Bao nhiêu Register thực sự do OM mua về, và paid có kéo organic lên không?",
+     charts:[
+      {v:"Stacked column", n:"Register theo tuần, tách ba nhóm nguồn", f:"Axis <b>Date[Week]</b> · Legend <b>media_group</b> (OM / organic / organicA) · Value <b>Register</b>"},
+      {v:"Card × 3", n:"Tỉ trọng từng nguồn", f:"% Register từ OM · từ organic · từ organicA"},
+      {v:"Combo", n:"Spend paid và Register organic cùng một trục ngày", f:"Column <b>Spending UA</b> · Line Register lọc <b>media_group = organic</b>"},
+      {v:"Scatter", n:"Quan hệ paid – organic, mỗi điểm một ngày", f:"X Install (OM) · Y Install (organic) · trendline → hệ số k của organic uplift"},
+      {v:"Matrix", n:"Bảng tháng", f:"Rows <b>Date[Month]</b> · Register OM / organic / organicA / tổng / tỉ lệ organic ÷ paid"},
+      {v:"Line", n:"Chất lượng traffic", f:"<b>Register Rate</b> theo ngày, legend <b>media_group</b>"}
+     ],
+     note:"Lỗ hổng nặng nhất của bản draft. Organic chiếm phần lớn Register, nên chart Register tổng nào không tách media_group đều đang để nền organic che biến động của paid."}
+   ]},
+  {n:"C", title:"Chuỗi và chất lượng", sub:"Tắc ở bước nào, và Register mua về có đáng tiền không — nhánh 3 Process và 4 Conceptual.",
+   pages:[
+    {code:"S8", title:"Funnel UA", from:"Mới", tags:["proc","conc"],
+     q:"Trong chuỗi Impression → Click → Install → Register, bước nào đang tụt?",
+     charts:[
+      {v:"Funnel", n:"Bốn bước chính", f:"<b>Impression</b> → <b>Click</b> → <b>Install</b> → <b>Register</b> (+ <b>Unique login</b>)"},
+      {v:"Card × 5", n:"Tỉ lệ chuyển đổi từng bước", f:"<b>CTR</b> · CVR (Install ÷ Click) · <b>Register Rate</b> · <b>R2</b> · <b>R7</b>"},
+      {v:"Small multiples", n:"Mỗi tỉ lệ một đường theo thời gian", f:"CTR · CVR · Register Rate theo <b>Date[Date]</b>"},
+      {v:"Matrix", n:"Funnel cắt theo kênh và OS", f:"Rows <b>media_source</b> × <b>OS</b> — chỉ FB / Google / TikTok"},
+      {v:"Line", n:"Giá đầu vào", f:"<b>CPM</b> theo ngày, legend <b>ads_manager[media_source]</b>"},
+      {v:"Bar", n:"Objective nào đang ăn Impression", f:"<b>Impression</b> và <b>Spend H5</b> theo <b>ads_manager[Objective]</b>"}
+     ],
+     note:"ads_manager và Latte_db chỉ nối qua Date, nên để hai nhóm slicer riêng. Muốn một slicer kênh lọc cả hai thì phải thêm một bảng dimension Channel dùng chung."},
+    {code:"S9", title:"Retention", from:"Draft page 9", tags:["proc","conc"],
+     q:"User đăng ký xong có ở lại không, và kênh nào mang về user ở lại lâu nhất?",
+     charts:[
+      {v:"Card × 4", n:"Mức giữ chân", f:"<b>R2</b> · <b>R7</b> · <b>R7 new user</b> · <b>R7 new user Last Year</b>"},
+      {v:"Line", n:"Theo cohort tuần, có benchmark", f:"<b>R2</b>, <b>R7</b> so với <b>R7 benchmark</b>"},
+      {v:"Matrix", n:"Giữ chân theo kênh và OS", f:"Rows <b>media_source</b> × <b>OS</b> · <b>R2</b>, <b>R7</b>, retention30, retention90"},
+      {v:"Scatter", n:"Rẻ chưa chắc ở lại", f:"X <b>CPR</b> · Y <b>R7</b> · Size <b>Register</b>"},
+      {v:"Line", n:"R2 và R7 của unique login", f:"<b>R2 Unique login</b> · <b>R7 Unique login</b>"}
+     ]},
+    {code:"S10", title:"Doanh thu và ROAS", from:"Draft page 10", tags:["conc","alg"],
+     q:"Register mua về có nạp không, và bao lâu thì hoàn vốn?",
+     charts:[
+      {v:"Card × 5", n:"Giá trị trên mỗi user", f:"<b>Revenue</b> · <b>ROAS7</b> · <b>ROAS30</b> · <b>LTV7</b> · <b>LTV30</b>"},
+      {v:"Line", n:"Đường ROAS tích lũy theo cohort", f:"<b>Cumulative ROAS7</b> → <b>14</b> → <b>30</b> → <b>60</b> → <b>90</b>"},
+      {v:"Matrix", n:"Giá trị theo kênh và OS", f:"<b>Pay user</b>, <b>ARPPU7</b>, <b>LTV7</b>, <b>ROAS7</b>"},
+      {v:"Scatter", n:"CPR rẻ nhưng ROAS kém", f:"X <b>CPR</b> · Y <b>ROAS7</b> · Size <b>Register</b>"},
+      {v:"Combo", n:"Doanh thu và chi phí cùng trục", f:"Column <b>Revenue</b> · Line <b>Spending UA</b> theo tuần"},
+      {v:"Text", n:"Ngưỡng chốt cùng game team", f:"Tăng Register nhưng không để R7 hoặc ROAS7 tụt dưới benchmark"}
+     ]},
+    {code:"S11", title:"So kỳ và mùa vụ", from:"Mới", tags:["opp","conc","seg"],
+     q:"Mức hiện tại là bất thường thật, hay chỉ là chu kỳ quen thuộc của thị trường?",
+     charts:[
+      {v:"Line", n:"Cùng kỳ năm trước", f:"<b>Register</b> vs <b>Register Last Year</b> · <b>CPR</b> vs <b>CPR Last Year</b>"},
+      {v:"Clustered column", n:"Theo tháng, ba năm chồng nhau", f:"Axis <b>Date[Month]</b> · Legend <b>Date[Year]</b> · Value <b>Register</b>"},
+      {v:"Bar", n:"Trung bình ngày theo thứ trong tuần", f:"Axis <b>Date[Weekday]</b> · <b>Register</b> và <b>CPR</b>"},
+      {v:"Matrix", n:"Tuần × kênh", f:"Rows <b>Date[Week]</b> · Cols <b>media_source</b> · <b>Register</b>, <b>CPR</b>"},
+      {v:"Combo", n:"Kỳ CPM đắt", f:"Column <b>Spending UA</b> · Line <b>CPM</b> theo tháng"}
+     ]}
+   ]},
+  {n:"D", title:"Hành động và tham chiếu", sub:"Chốt việc, theo dõi kết quả, và chỗ tra định nghĩa — nhánh 6 Action levers.",
+   pages:[
+    {code:"S12", title:"Đòn bẩy và theo dõi", from:"Draft page 13", tags:["act"],
+     q:"Ai làm gì tiếp theo, và một tuần sau nhìn vào đâu để biết có ăn thua không?",
+     charts:[
+      {v:"Table", n:"Bảng lever", f:"Triệu chứng → nguyên nhân khả dĩ → đòn bẩy (Budget / Bid / Creative / Targeting / Channel mix / ASO) → OM hay game team → xem ở page nào"},
+      {v:"Button", n:"Nút nhảy sang đúng page chẩn đoán", f:"Bookmark navigator"},
+      {v:"Table", n:"Nhật ký hành động và kết quả sau 7 ngày", f:"Ngày · campaign · thay đổi gì · Register và CPR trước / sau — nhập qua bảng Sample plan"},
+      {v:"Card × 4", n:"Ngưỡng đang áp dụng", f:"<b>CPI cap</b> · <b>CPR Target</b> · <b>R7 benchmark</b> · <b>CPV benchmark</b>"}
+     ]},
+    {code:"S13", title:"Cách đọc report", from:"Mới", tags:["seg"],
+     q:"Report này trả lời được gì, số lấy từ đâu, và chỗ nào không nên tin?",
+     charts:[
+      {v:"Shape + Button", n:"Sơ đồ hub and spoke, mỗi ô là một nút nhảy", f:"Page navigator · bookmark"},
+      {v:"Text box", n:"Định nghĩa metric", f:"Register · Install · CPI · CPR · Register Rate · R2 / R7 · media_group"},
+      {v:"Table", n:"Độ phủ dữ liệu từng nguồn", f:"Nguồn · grain · ngày đầu · ngày cuối · kênh có mặt"},
+      {v:"Text box", n:"Ba cảnh báo đọc số", f:"Age/Gender/Audience không dùng · Impression chỉ 3 kênh · 2 fact chỉ nối qua Date"}
+     ]}
+   ]}
+];
+
+const MAP = [
+  ["1 · Tổng quan","H1 Tổng quan Register","Thêm stacked area tách paid/organic, banner filter context, hàng nút nhảy"],
+  ["2 · Spend & CPR","S1 Spend và CPR","Gộp với page 3, thêm card quy đổi tác động ra Register"],
+  ["3 · Spend & pacing","S1 Spend và CPR","Gộp — pacing là một phần của câu chuyện Spend"],
+  ["4 · CPI & Install","S2 CPI và Install","Thêm line CPM và CTR để thấy nguồn gốc của CPI"],
+  ["5 · Register Rate","S3 Register Rate","Thêm bar paid vs organic và line nền dài hạn"],
+  ["6 · Kênh & OS","S4 Kênh và OS","Thêm 100% bar share Spend vs share Register (mix effect)"],
+  ["7 · Campaign","S5 Campaign","Giữ nguyên, thêm scatter 4 góc Scale / Giữ / Sửa / Tắt"],
+  ["8 · Creative","S6 Creative và Ad","Thêm đường fatigue theo tuổi creative"],
+  ["9 · Retention","S9 Retention","Giữ nguyên"],
+  ["10 · Doanh thu","S10 Doanh thu và ROAS","Giữ nguyên, thêm scatter CPR vs ROAS7"],
+  ["11 · Nguyên nhân","H3 Chẩn đoán","Gộp với page 12 thành một mạch bốn bước"],
+  ["12 · Chẩn đoán","H3 Chẩn đoán","Gộp — tách hai page buộc người đọc nhớ số qua hai lần bấm"],
+  ["13 · Đòn bẩy","S12 Đòn bẩy và theo dõi","Thêm nhật ký hành động và kết quả sau 7 ngày"],
+  [null,"H2 Phân rã Register","Bù lỗ hổng: waterfall lượng hoá đóng góp của Spend / CPI / Register Rate"],
+  [null,"H4 Cơ hội và headroom","Bù lỗ hổng: trả lời thẳng câu hỏi tăng ở đâu rẻ nhất"],
+  [null,"S7 Paid và Organic","Bù lỗ hổng: tách nền organic khỏi phần paid mua về"],
+  [null,"S8 Funnel UA","Bù lỗ hổng: biết tắc ở bước nào, không chỉ biết metric nào xấu"],
+  [null,"S11 So kỳ và mùa vụ","Bù lỗ hổng: loại trừ chu kỳ trước khi đổ lỗi cho campaign"],
+  [null,"S13 Cách đọc report","Trang hướng dẫn cho người mới và cho stakeholder"]
+];
+
+/* ---------- render ---------- */
+const esc = s => String(s).replace(/&(?![a-z#]+;)/g,"&amp;").replace(/</g,"&lt;");
+const ALL = [...HUB, ...GROUPS.flatMap(g => g.pages)];
+const TITLE_BY_CODE = Object.fromEntries(ALL.map(p => [p.code, p.title]));
+
+const counts = {};
+Object.keys(BRANCHES).forEach(k => counts[k] = 0);
+ALL.forEach(p => p.tags.forEach(t => counts[t]++));
+
+document.getElementById("branchChips").innerHTML = Object.entries(BRANCHES).map(([k,v]) =>
+  `<button class="chip" type="button" data-branch="${k}" aria-pressed="false">${v.label}<span class="n">${counts[k]} page</span></button>`
+).join("");
+
+function pageCard(p, isHub){
+  const id = "pg-" + p.code;
+  return `<article class="page${isHub ? " hub" : ""}" id="${id}" data-tags="${p.tags.join(" ")}">
+    <button class="ptop" type="button" aria-expanded="true" aria-controls="${id}-b">
+      <div>
+        <div class="pcodeln">
+          <span class="pcode">${p.code}</span>
+          <span class="from${p.from === "Mới" ? " new" : ""}">${p.from}</span>
+        </div>
+        <div class="ptitle">${p.title}</div>
+        <p class="pq">${p.q}</p>
+        <div class="ptags">${p.tags.map(t => `<span class="tag">${BRANCHES[t].label}</span>`).join("")}<span class="tag">${p.charts.length} chart</span></div>
+      </div>
+      <span class="caret" aria-hidden="true">thu gọn</span>
+    </button>
+    <div class="pbody" id="${id}-b">
+      <ul class="charts">
+        ${p.charts.map(c => `<li>
+          <span class="vis">${esc(c.v)}</span>
+          <div class="cmain">
+            <div class="cname">${esc(c.n)}</div>
+            <div class="cfield">${c.f}</div>
+          </div>
+        </li>`).join("")}
+      </ul>
+      ${p.note ? `<p class="pnote">${esc(p.note)}</p>` : ""}
+      ${p.jumps ? `<div class="jumps"><span class="eyebrow">Nút nhảy sang spoke</span><div class="jumprow">${
+        p.jumps.map(j => `<button class="jump" type="button" data-to="${j}">${j} · ${TITLE_BY_CODE[j] || j}</button>`).join("")
+      }</div></div>` : ""}
+    </div>
+  </article>`;
+}
+
+document.getElementById("hubPages").innerHTML = HUB.map(p => pageCard(p, true)).join("");
+
+document.getElementById("spokeGroups").innerHTML = GROUPS.map(g => `
+  <div class="groupblock">
+    <div class="groupname">
+      <div class="gnum">${g.n}</div>
+      <div>
+        <h3>${g.title}</h3>
+        <p class="gsub">${g.sub}</p>
+      </div>
+    </div>
+    <div class="pages">${g.pages.map(p => pageCard(p, false)).join("")}</div>
+  </div>`).join("");
+
+document.getElementById("mapBody").innerHTML = MAP.map(([oldp, newp, change]) => `
+  <tr>
+    <td${oldp ? "" : ' class="newcell"'}>${oldp || "— page mới —"}</td>
+    <td class="code">${newp}</td>
+    <td>${change}</td>
+  </tr>`).join("");
+
+/* ---------- interactions ---------- */
+function setOpen(article, open){
+  const btn = article.querySelector(".ptop");
+  const body = article.querySelector(".pbody");
+  btn.setAttribute("aria-expanded", String(open));
+  body.hidden = !open;
+  btn.querySelector(".caret").textContent = open ? "thu gọn" : "xem chart";
+}
+document.querySelectorAll(".ptop").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const art = btn.closest(".page");
+    setOpen(art, btn.getAttribute("aria-expanded") !== "true");
+  });
+});
+document.getElementById("expandAll").addEventListener("click", () =>
+  document.querySelectorAll(".page").forEach(a => setOpen(a, true)));
+document.getElementById("collapseAll").addEventListener("click", () =>
+  document.querySelectorAll(".page").forEach(a => setOpen(a, false)));
+
+document.querySelectorAll(".jump").forEach(b => {
+  b.addEventListener("click", e => {
+    e.stopPropagation();
+    const target = document.getElementById("pg-" + b.dataset.to);
+    if(!target) return;
+    target.classList.remove("off");
+    setOpen(target, true);
+    target.scrollIntoView({behavior:"smooth", block:"center"});
+    target.classList.remove("flash");
+    void target.offsetWidth;
+    target.classList.add("flash");
+  });
+});
+
+let active = null;
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const b = chip.dataset.branch;
+    active = (active === b) ? null : b;
+    document.querySelectorAll(".chip").forEach(c =>
+      c.setAttribute("aria-pressed", String(c.dataset.branch === active)));
+    document.querySelectorAll(".page").forEach(a =>
+      a.classList.toggle("off", active !== null && !a.dataset.tags.split(" ").includes(active)));
+    document.querySelectorAll(".groupblock").forEach(s =>
+      s.hidden = s.querySelectorAll(".page:not(.off)").length === 0);
+  });
+});
+</script>
+</html>
