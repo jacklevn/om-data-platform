@@ -1,0 +1,654 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Review OKR Wireframes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: mot cot doc, moi tieu chi = 1 the; cac dieu chinh co khung "Hien tai / De xuat" canh nhau.
+   Palette: muon tu chinh theme Simplifica cua wireframe de mockup doc nhu cung mot san pham. */
+:root{
+  --bg:#EEF1F4; --panel:#FFFFFF; --sunk:#F6F8FA; --fg:#062F4F; --muted:#5C6F7F; --line:#D5DCE3;
+  --navy:#062F4F; --green:#5E8F00; --blue:#0375B4; --red:#B82601; --amber:#C98A00; --teal:#008F95; --grey:#9A9A97;
+  --okbg:#E8F2D8; --warnbg:#FDF0CF; --badbg:#FAE2DC; --chip:#E4EAF0;
+  --font:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --head:'Space Grotesk','Inter',system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0B1722; --panel:#10253A; --sunk:#0E2032; --fg:#E6EEF5; --muted:#93A6B7; --line:#24405A; --navy:#E6EEF5;
+  --green:#8FCB2A; --blue:#49A9DF; --red:#F0714D; --amber:#F2B433; --teal:#36B6BB; --grey:#8898A6;
+  --okbg:#1B3220; --warnbg:#3A3110; --badbg:#3B1B14; --chip:#1B3750; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1722; --panel:#10253A; --sunk:#0E2032; --fg:#E6EEF5; --muted:#93A6B7; --line:#24405A; --navy:#E6EEF5;
+  --green:#8FCB2A; --blue:#49A9DF; --red:#F0714D; --amber:#F2B433; --teal:#36B6BB; --grey:#8898A6;
+  --okbg:#1B3220; --warnbg:#3A3110; --badbg:#3B1B14; --chip:#1B3750; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.55;
+  padding-block:28px 56px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3,h4{font-family:var(--head);margin:0;text-wrap:balance;line-height:1.25}
+h1{font-size:30px;letter-spacing:-.01em}
+h2{font-size:21px}
+h3{font-size:16px}
+p{margin:0}
+a{color:var(--blue)}
+.lede{color:var(--muted);max-width:66ch}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
+.meta b{color:var(--fg);font-weight:600}
+hr{border:0;border-top:1px solid var(--line);margin:0}
+
+/* --- scorecard --- */
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:620px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--head);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--sunk)}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-variant-numeric:tabular-nums}
+.st{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.st.ok{background:var(--okbg);color:var(--green)}
+.st.wn{background:var(--warnbg);color:var(--amber)}
+.st.bd{background:var(--badbg);color:var(--red)}
+
+/* --- findings --- */
+.fix{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.fix>header{display:flex;gap:12px;align-items:flex-start;padding:16px 18px;border-bottom:1px solid var(--line)}
+.num{font-family:var(--head);font-weight:700;font-size:13px;line-height:22px;min-width:22px;height:22px;text-align:center;
+  border-radius:6px;background:var(--navy);color:var(--bg);flex:none}
+.fix>header .t{display:flex;flex-direction:column;gap:3px;min-width:0}
+.fix>header .page{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.fix .body{padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.why{color:var(--muted);font-size:14px;max-width:72ch}
+.why b,.why strong{color:var(--fg)}
+ul.tight{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:5px;font-size:14px}
+ul.tight li::marker{color:var(--muted)}
+
+/* --- before / after mockups --- */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:760px){.cmp{grid-template-columns:1fr}}
+.pane{border:1px solid var(--line);border-radius:10px;background:var(--sunk);padding:10px 12px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pane.now{border-style:dashed}
+.pane.new{border-color:var(--blue);background:var(--panel)}
+.pane>.cap{font-family:var(--head);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.pane.new>.cap{color:var(--blue)}
+
+/* mini report chrome used inside mockups */
+.mini{display:flex;flex-direction:column;gap:8px;font-size:11px}
+.mini .sec{font-family:var(--head);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.row{display:flex;gap:6px;flex-wrap:wrap}
+.row.g4>*{flex:1 1 90px;min-width:0}
+.row.g3>*{flex:1 1 110px;min-width:0}
+.row.g2>*{flex:1 1 150px;min-width:0}
+.box{border:1px solid var(--line);border-radius:7px;background:var(--panel);padding:7px 8px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.box .l{font-size:10px;color:var(--muted);line-height:1.3}
+.box .v{font-family:var(--head);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.box .r{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:4px;margin-top:1px;font-size:9.5px;color:var(--muted)}
+.box .r span{display:flex;flex-direction:column;min-width:0}
+.box .r b{color:var(--fg);font-size:10.5px;font-variant-numeric:tabular-nums;font-weight:600}
+.ghost{border:1px dashed var(--line);border-radius:7px;background:transparent;padding:10px 8px;color:var(--muted);
+  font-size:10.5px;text-align:center;display:flex;align-items:center;justify-content:center;min-height:52px}
+.ct{font-size:10.5px;font-weight:600;font-family:var(--head)}
+.cq{font-size:9.5px;color:var(--muted);margin-top:-2px}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:var(--font);font-size:8px;fill:var(--muted)}
+svg .gr{stroke:var(--line);stroke-width:1}
+svg .ln{fill:none;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}
+svg .tg{fill:none;stroke-width:1.4;stroke-dasharray:4 3}
+.lg{display:flex;gap:9px;flex-wrap:wrap;font-size:9px;color:var(--muted)}
+.lg i{display:inline-block;width:9px;height:3px;border-radius:2px;vertical-align:middle;margin-right:3px}
+.pill{display:inline-block;font-size:9.5px;font-weight:600;padding:1px 6px;border-radius:999px}
+.pill.g{background:var(--okbg);color:var(--green)}
+.pill.a{background:var(--warnbg);color:var(--amber)}
+.pill.r{background:var(--badbg);color:var(--red)}
+.fbar{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.fc{display:inline-flex;gap:4px;align-items:center;border:1px solid var(--line);border-radius:5px;background:var(--panel);
+  padding:2px 7px;font-size:10px;color:var(--muted)}
+.fc b{color:var(--fg);font-weight:600}
+.fc.hi{border-color:var(--blue);box-shadow:0 0 0 2px color-mix(in srgb,var(--blue) 18%,transparent)}
+.mt{width:100%;border-collapse:collapse;font-size:10px;min-width:0}
+.mt th,.mt td{padding:3.5px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+.mt th{background:transparent;font-size:9px;letter-spacing:.04em;padding-top:0}
+.mt td.n{text-align:right;font-variant-numeric:tabular-nums}
+.mtw{overflow-x:auto}
+.hb{display:grid;grid-template-columns:62px 1fr 34px;gap:6px;align-items:center;font-size:9.5px}
+.hb .tr{height:7px;border-radius:3px;background:var(--chip);overflow:hidden}
+.hb .tr i{display:block;height:100%;border-radius:3px}
+.hb em{font-style:normal;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.note{background:var(--sunk);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:10px 14px;font-size:13.5px;color:var(--muted)}
+.note b{color:var(--fg)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;background:var(--chip);padding:1px 5px;border-radius:4px}
+.sub{display:flex;flex-direction:column;gap:14px}
+.secthead{display:flex;flex-direction:column;gap:4px}
+.secthead p{color:var(--muted);font-size:14px;max-width:70ch}
+</style>
+
+<div class="wrap">
+
+  <header class="secthead">
+    <h1>Review OKR Wireframes</h1>
+    <p class="lede">Đối chiếu 11 page của <code>OKR-wireframes.html</code> với 7 tiêu chí bố cục đã aligned. Bố cục tổng thể đúng — mọi tiêu chí đều có page tương ứng. Phần còn thiếu nằm ở <b>metric và chart bên trong từng page</b>, tập trung ở Weekly, Post Boosting và Creative.</p>
+    <div class="meta">
+      <span><b>Nguồn</b> OKR-wireframes.html · 11 page / 8 nhóm nav</span>
+      <span><b>Ngày</b> 12/11/2026</span>
+      <span><b>Kết luận</b> 5 điểm phải sửa · 6 nên bổ sung · 6 phụ thuộc model</span>
+    </div>
+  </header>
+
+  <hr>
+
+  <!-- ============ SCORECARD ============ -->
+  <section class="sub">
+    <div class="secthead">
+      <h2>Chấm theo 7 tiêu chí</h2>
+      <p>“Đủ” = page có mặt và chứa key metric của tiêu chí. “Thiếu” = page có nhưng chưa trả lời được câu hỏi mà tiêu chí đặt ra.</p>
+    </div>
+    <div class="tblw">
+      <table>
+        <thead><tr><th>Tiêu chí</th><th>Page trong wireframe</th><th>Trạng thái</th><th>Thiếu gì</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>OKR</b> — key metric 3 dạng campaign</td>
+            <td>OKR · Overview</td>
+            <td><span class="st wn">Sửa cách đọc</span></td>
+            <td>Có đủ UA / UE / PB. Nhưng thanh “% đạt target” trộn metric càng cao càng tốt với càng thấp càng tốt trên cùng một trục → đọc sai. Thiếu mốc tiến độ kỳ.</td>
+          </tr>
+          <tr>
+            <td><b>Daily</b> — check nhanh hôm qua</td>
+            <td>Daily · Simple + Detail</td>
+            <td><span class="st ok">Đủ</span></td>
+            <td>Mạnh nhất trong 11 page. Chỉ thiếu 2 dòng diễn giải (Install, Register Rate) và breakdown media source ở Detail.</td>
+          </tr>
+          <tr>
+            <td><b>Weekly</b> — line chart dài ngày + WoW</td>
+            <td>Weekly</td>
+            <td><span class="st bd">Thiếu</span></td>
+            <td><b>Không có line chart theo ngày nào</b> — đúng phần screenshot 1 minh hoạ. Register Rate và R2/R7 biến mất. WoW mới chỉ là chữ “vs L7D” trong card.</td>
+          </tr>
+          <tr>
+            <td><b>Monthly</b> — MTD + MoM</td>
+            <td>Monthly · MoM</td>
+            <td><span class="st wn">Sửa filter</span></td>
+            <td>Khung MoM đúng. Nhưng default slicer là “Tất cả (Jan – Nov)” chứ không phải MTD, và chart 11 tháng sẽ bị chính slicer Month bóp còn 1 cột.</td>
+          </tr>
+          <tr>
+            <td><b>UA</b> — tách Summary / Detail</td>
+            <td>UA · Summary + Detail</td>
+            <td><span class="st ok">Đủ</span></td>
+            <td>Summary khớp screenshot 1. Thiếu line Register vs Target (KR chính lại không có trend). Bảng “Theo ngày” 18 cột quá rộng.</td>
+          </tr>
+          <tr>
+            <td><b>UE</b> — tách Summary / Detail</td>
+            <td>UE · Summary + Detail</td>
+            <td><span class="st ok">Đủ</span></td>
+            <td>Mirror đúng form UA. Thiếu Frequency / Reach — với campaign retarget churn user thì đây là chỉ số cảnh báo chính.</td>
+          </tr>
+          <tr>
+            <td><b>Post Boosting</b> — Spending vs target, kết quả vs benchmark</td>
+            <td>PB · Boost post</td>
+            <td><span class="st bd">Thiếu</span></td>
+            <td><b>Không có Spending vs target</b> (chỉ có MTD Spending). Views / Engagement / Page Likes bị gộp thành một con số “PB Result” với một benchmark duy nhất $0,050.</td>
+          </tr>
+          <tr>
+            <td><b>Creative</b> — spend nhiều nhất, hiệu quả nhất</td>
+            <td>Creative · Performance</td>
+            <td><span class="st wn">Thiếu metric</span></td>
+            <td>“Spend nhiều nhất” đủ. “Hiệu quả nhất” mới có CPR — thiếu tầng CTR / CPM / ThruPlay và thiếu trend để thấy creative fatigue.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ============ MUST FIX ============ -->
+  <section class="sub">
+    <div class="secthead">
+      <h2>5 điểm phải sửa</h2>
+      <p>Xếp theo mức lệch so với tiêu chí. Khung trái là wireframe hiện tại, khung phải là đề xuất.</p>
+    </div>
+
+    <!-- 1 WEEKLY -->
+    <article class="fix">
+      <header>
+        <span class="num">1</span>
+        <div class="t">
+          <span class="page">Weekly</span>
+          <h3>Thiếu hẳn dải line chart theo ngày</h3>
+        </div>
+      </header>
+      <div class="body">
+        <p class="why">Tiêu chí Weekly ghi rõ: “kết hợp thêm các line chart để nhìn key metrics trong khoảng thời gian dài”. Hiện Weekly chỉ có <b>cột theo tuần</b> (6 cột W41–W46) — mỗi tuần là một cột nên không thấy được hình dạng trong tuần, không thấy ngày nào gãy. Đây đúng là phần screenshot 1 đang minh hoạ và cũng là phần duy nhất của screenshot chưa có mặt ở Weekly.</p>
+        <div class="cmp">
+          <div class="pane now">
+            <span class="cap">Hiện tại — chỉ cột theo tuần</span>
+            <div class="mini">
+              <div class="sec">User Acquisition</div>
+              <div class="row g3">
+                <div class="box"><span class="l">Spending</span><span class="v">$42,6K</span><span class="l">vs L7D: +5%</span></div>
+                <div class="box"><span class="l">Register</span><span class="v">36.100</span><span class="l">vs L7D: −3%</span></div>
+                <div class="box"><span class="l">CPR</span><span class="v">$1,18</span><span class="l">vs L7D: +8%</span></div>
+              </div>
+              <div class="row g2">
+                <div class="box">
+                  <span class="ct">Register theo tuần vs Target</span>
+                  <svg viewBox="0 0 220 86" role="img" aria-label="Cột Register theo 6 tuần, có vạch target">
+                    <line class="gr" x1="22" y1="70" x2="214" y2="70"/>
+                    <line class="tg" style="stroke:var(--amber)" x1="22" y1="26" x2="214" y2="26"/>
+                    <rect x="28" y="44" width="20" height="26" fill="var(--green)" opacity=".85"/>
+                    <rect x="60" y="38" width="20" height="32" fill="var(--green)" opacity=".85"/>
+                    <rect x="92" y="35" width="20" height="35" fill="var(--green)" opacity=".85"/>
+                    <rect x="124" y="40" width="20" height="30" fill="var(--green)" opacity=".85"/>
+                    <rect x="156" y="31" width="20" height="39" fill="var(--green)" opacity=".85"/>
+                    <rect x="188" y="37" width="20" height="33" fill="var(--green)" opacity=".85"/>
+                    <text x="30" y="80">W41</text><text x="190" y="80">W46</text>
+                    <text x="0" y="29">9,5K</text>
+                  </svg>
+                </div>
+                <div class="box">
+                  <span class="ct">CPR theo tuần vs CPR Target</span>
+                  <svg viewBox="0 0 220 86" role="img" aria-label="Cột CPR theo 6 tuần, có vạch target">
+                    <line class="gr" x1="22" y1="70" x2="214" y2="70"/>
+                    <line class="tg" style="stroke:var(--amber)" x1="22" y1="34" x2="214" y2="34"/>
+                    <rect x="28" y="44" width="20" height="26" fill="var(--red)" opacity=".8"/>
+                    <rect x="60" y="40" width="20" height="30" fill="var(--red)" opacity=".8"/>
+                    <rect x="92" y="37" width="20" height="33" fill="var(--red)" opacity=".8"/>
+                    <rect x="124" y="30" width="20" height="40" fill="var(--red)" opacity=".8"/>
+                    <rect x="156" y="33" width="20" height="37" fill="var(--red)" opacity=".8"/>
+                    <rect x="188" y="24" width="20" height="46" fill="var(--red)" opacity=".8"/>
+                    <text x="30" y="80">W41</text><text x="190" y="80">W46</text>
+                    <text x="0" y="37">$1,23</text>
+                  </svg>
+                </div>
+              </div>
+              <div class="ghost">Không có chart nào theo ngày</div>
+            </div>
+          </div>
+
+          <div class="pane new">
+            <span class="cap">Đề xuất — thêm 1 dải “Xu hướng theo ngày” trên cùng</span>
+            <div class="mini">
+              <div class="sec">Xu hướng theo ngày · toàn khoảng lọc</div>
+              <div class="row g2">
+                <div class="box">
+                  <span class="ct">Spending vs UA Daily budget</span>
+                  <svg viewBox="0 0 220 76" role="img" aria-label="Line Spending so với daily budget">
+                    <line class="gr" x1="20" y1="62" x2="214" y2="62"/>
+                    <line class="tg" style="stroke:var(--grey)" x1="20" y1="24" x2="214" y2="24"/>
+                    <polyline class="ln" style="stroke:var(--green)" points="20,46 36,41 52,43 68,38 84,40 100,34 116,36 132,31 148,20 164,18 180,52 196,54 212,53"/>
+                    <circle cx="212" cy="53" r="2.4" fill="var(--green)"/>
+                    <text x="0" y="27">$4K</text><text x="0" y="65">$0</text>
+                  </svg>
+                  <div class="lg"><span><i style="background:var(--green)"></i>Spending</span><span><i style="background:var(--grey)"></i>UA Daily budget</span></div>
+                </div>
+                <div class="box">
+                  <span class="ct">CPR vs CPR Target</span>
+                  <svg viewBox="0 0 220 76" role="img" aria-label="Line CPR so với CPR target">
+                    <line class="gr" x1="20" y1="62" x2="214" y2="62"/>
+                    <line class="tg" style="stroke:var(--grey)" x1="20" y1="36" x2="214" y2="36"/>
+                    <polyline class="ln" style="stroke:var(--navy)" points="20,44 36,34 52,46 68,30 84,26 100,38 116,41 132,30 148,22 164,28 180,52 196,55 212,14"/>
+                    <circle cx="212" cy="14" r="2.4" fill="var(--navy)"/>
+                    <text x="0" y="39">$0,2</text><text x="0" y="65">$0</text>
+                  </svg>
+                  <div class="lg"><span><i style="background:var(--navy)"></i>CPR</span><span><i style="background:var(--grey)"></i>CPR Target</span></div>
+                </div>
+              </div>
+              <div class="row g2">
+                <div class="box">
+                  <span class="ct">Register Rate theo ngày</span>
+                  <svg viewBox="0 0 220 76" role="img" aria-label="Line Register Rate theo ngày">
+                    <line class="gr" x1="20" y1="62" x2="214" y2="62"/>
+                    <polyline class="ln" style="stroke:var(--green)" points="20,40 36,30 52,34 68,38 84,36 100,28 116,24 132,32 148,26 164,30 180,34 196,28 212,33"/>
+                    <circle cx="212" cy="33" r="2.4" fill="var(--green)"/>
+                    <text x="0" y="31">60%</text><text x="0" y="65">0%</text>
+                  </svg>
+                </div>
+                <div class="box">
+                  <span class="ct">R2 / R7 new user theo ngày</span>
+                  <svg viewBox="0 0 220 76" role="img" aria-label="Line R2 và R7 theo ngày">
+                    <line class="gr" x1="20" y1="62" x2="214" y2="62"/>
+                    <polyline class="ln" style="stroke:var(--navy)" points="20,28 36,30 52,42 68,26 84,24 100,34 116,28 132,22 148,26 164,24 180,32 196,30 212,24"/>
+                    <polyline class="ln" style="stroke:var(--teal)" points="20,48 36,50 52,46 68,48 84,50 100,46 116,48 132,45 148,47 164,44 180,49 196,47 212,47"/>
+                    <text x="0" y="31">40%</text><text x="0" y="65">0%</text>
+                  </svg>
+                  <div class="lg"><span><i style="background:var(--navy)"></i>R2 new user</span><span><i style="background:var(--teal)"></i>R7 new user</span></div>
+                </div>
+              </div>
+              <div class="sec">User Acquisition · theo tuần (giữ nguyên phần hiện có)</div>
+            </div>
+          </div>
+        </div>
+        <ul class="tight">
+          <li>Dùng lại đúng 4 chart của <b>UA - Summary</b>, chỉ đổi khoảng lọc sang Week → không phải dựng visual mới.</li>
+          <li>Đặt dải này <b>trên</b> các cột theo tuần: đọc xu hướng trước, đọc so sánh tuần sau.</li>
+          <li>Nhãn <code>vs L7D</code> không khớp định nghĩa weekly đã chốt (T2 → CN gần nhất). L7D = 7 ngày gần nhất, không phải tuần trước. Đổi thành <code>vs W45</code>.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 2 POST BOOSTING -->
+    <article class="fix">
+      <header>
+        <span class="num">2</span>
+        <div class="t">
+          <span class="page">Post Boosting</span>
+          <h3>Thiếu Spending vs target, và gộp Views / Engagement / Page Likes thành một số</h3>
+        </div>
+      </header>
+      <div class="body">
+        <p class="why">Tiêu chí PB có hai vế: <b>Spending so với target</b> và <b>kết quả (Views, Engagement, Page Likes) với benchmark</b>. Wireframe hiện chỉ có <code>MTD Spending</code> không có target để so, và dồn mọi loại kết quả vào một metric <code>PB Result</code> dùng chung một benchmark <code>$0,050</code>. Một video view, một engagement và một page like không cùng đơn giá — gộp lại thì <code>Cost per Result</code> chỉ phản ánh tỷ trọng objective trong kỳ, không phản ánh hiệu quả.</p>
+        <div class="cmp">
+          <div class="pane now">
+            <span class="cap">Hiện tại — 1 result, 1 benchmark</span>
+            <div class="mini">
+              <div class="row g3">
+                <div class="box"><span class="l">Actual Spending PB</span><span class="v">$4,3K</span>
+                  <span class="r"><span>MTD Spending<b>$4,3K</b></span></span></div>
+                <div class="box"><span class="l">PB Cost per Result</span><span class="v">$0,042</span>
+                  <span class="r"><span>Benchmark<b>$0,050</b></span><span>vs BM<b>−16%</b></span></span></div>
+                <div class="box"><span class="l">Actual PB Result</span><span class="v">1,02M</span>
+                  <span class="r"><span>% Target<b>91%</b></span></span></div>
+              </div>
+              <div class="ghost">Card Spending không có Budget / UTD Budget / % Spend — không trả lời được “tiêu đúng tiến độ chưa”</div>
+              <div class="ghost">“Result” = Views + Engagement + Page Likes cộng dồn</div>
+            </div>
+          </div>
+          <div class="pane new">
+            <span class="cap">Đề xuất — Spending có target, result tách theo objective</span>
+            <div class="mini">
+              <div class="row g3">
+                <div class="box"><span class="l">Actual Spending PB</span><span class="v">$4,3K</span>
+                  <span class="r"><span>Budget<b>$6,0K</b></span><span>UTD Budget<b>$2,2K</b></span><span>% Spend<b>72%</b></span></span></div>
+                <div class="box"><span class="l">Spending vs UTD Budget</span><span class="v">+96%</span>
+                  <span class="r"><span>Trạng thái<b><span class="pill r">Vượt tiến độ</span></b></span></span></div>
+                <div class="box"><span class="l">PB Result (tổng)</span><span class="v">1,02M</span>
+                  <span class="r"><span>% Target<b>91%</b></span></span></div>
+              </div>
+              <div class="sec">Kết quả theo loại · benchmark riêng từng loại</div>
+              <div class="mtw"><table class="mt">
+                <thead><tr><th>Objective</th><th class="n">Spending</th><th class="n">Result</th><th class="n">Cost/Result</th><th class="n">Benchmark</th><th>vs BM</th></tr></thead>
+                <tbody>
+                  <tr><td>Video view</td><td class="n">$1,6K</td><td class="n">640K views</td><td class="n">$0,0025</td><td class="n">$0,0030</td><td><span class="pill g">−17%</span></td></tr>
+                  <tr><td>Engagement</td><td class="n">$2,0K</td><td class="n">340K eng.</td><td class="n">$0,0059</td><td class="n">$0,0050</td><td><span class="pill r">+18%</span></td></tr>
+                  <tr><td>Page like</td><td class="n">$0,7K</td><td class="n">40K likes</td><td class="n">$0,0175</td><td class="n">$0,0200</td><td><span class="pill g">−13%</span></td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+        </div>
+        <ul class="tight">
+          <li>Thêm <b>Budget / UTD Budget / % Spend</b> vào card Spending PB, đúng form multi-card của UA - Summary.</li>
+          <li><b>Benchmark phải là một cột theo Objective</b>, không phải một hằng số. Cùng lúc sửa luôn mâu thuẫn hiện tại: page OKR ghi PB “% Target 91%” trong khi Daily - Simple ghi “chưa có target”.</li>
+          <li>Thêm một line <b>Spending PB vs Daily budget</b> cạnh chart Cost per Result, để vế “Spending so với target” có cả card lẫn trend.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 3 OKR -->
+    <article class="fix">
+      <header>
+        <span class="num">3</span>
+        <div class="t">
+          <span class="page">OKR</span>
+          <h3>Thanh “% đạt target” trộn hai chiều tốt/xấu trên cùng một trục</h3>
+        </div>
+      </header>
+      <div class="body">
+        <p class="why">Chart xếp 8 KR cạnh nhau với vạch 100%. Nhưng <b>Register 88% là chưa đạt</b>, còn <b>CPR 96% là đang tốt</b> (rẻ hơn target 4%) — cùng nằm dưới vạch 100% mà ý nghĩa ngược nhau. Người đọc nhanh sẽ hiểu sai hướng của CPR và CPA. Ghi chú dưới chart có giải thích, nhưng chart phải tự đọc được.</p>
+        <div class="cmp">
+          <div class="pane now">
+            <span class="cap">Hiện tại — 8 KR chung một thang</span>
+            <div class="mini">
+              <div class="hb"><span>UA · Register</span><div class="tr"><i style="width:68%;background:var(--green)"></i></div><em>88%</em></div>
+              <div class="hb"><span>UA · Spending</span><div class="tr"><i style="width:58%;background:var(--blue)"></i></div><em>76%</em></div>
+              <div class="hb"><span>UA · CPR</span><div class="tr"><i style="width:74%;background:var(--green)"></i></div><em>96%</em></div>
+              <div class="hb"><span>UE · Login C7+</span><div class="tr"><i style="width:63%;background:var(--green)"></i></div><em>82%</em></div>
+              <div class="hb"><span>UE · CPA C7+</span><div class="tr"><i style="width:83%;background:var(--red)"></i></div><em>108%</em></div>
+              <div class="hb"><span>PB · Result</span><div class="tr"><i style="width:70%;background:var(--green)"></i></div><em>91%</em></div>
+              <div class="ghost">CPR 96% (tốt) và Register 88% (chưa đạt) cùng nằm dưới vạch 100%</div>
+            </div>
+          </div>
+          <div class="pane new">
+            <span class="cap">Đề xuất — tách 2 nhóm, cùng quy ước “100% = đạt”</span>
+            <div class="mini">
+              <div class="sec">Càng cao càng tốt · Actual / Target</div>
+              <div class="hb"><span>UA · Register</span><div class="tr"><i style="width:68%;background:var(--amber)"></i></div><em>88%</em></div>
+              <div class="hb"><span>UE · Login C7+</span><div class="tr"><i style="width:63%;background:var(--red)"></i></div><em>82%</em></div>
+              <div class="hb"><span>PB · Result</span><div class="tr"><i style="width:70%;background:var(--amber)"></i></div><em>91%</em></div>
+              <div class="sec">Càng thấp càng tốt · Target / Actual</div>
+              <div class="hb"><span>UA · CPR</span><div class="tr"><i style="width:80%;background:var(--green)"></i></div><em>104%</em></div>
+              <div class="hb"><span>UE · CPA C7+</span><div class="tr"><i style="width:71%;background:var(--red)"></i></div><em>93%</em></div>
+              <div class="hb"><span>PB · Cost/Result</span><div class="tr"><i style="width:91%;background:var(--green)"></i></div><em>119%</em></div>
+              <div class="sec">Tiến độ chi tiêu</div>
+              <div class="hb"><span>UA · % Spend</span><div class="tr"><i style="width:58%;background:var(--blue)"></i></div><em>76%</em></div>
+            </div>
+          </div>
+        </div>
+        <ul class="tight">
+          <li>Nhóm 2 đảo công thức thành <code>Target / Actual</code> → mọi thanh đọc chung một luật: <b>dài hơn vạch 100% là tốt</b>, ngắn hơn là cần xử lý.</li>
+          <li>Tách <b>% Spend</b> ra khỏi bảng KR: nó là tiến độ ngân sách, không phải mức đạt mục tiêu — để chung sẽ bị đọc như “mới đạt 76%”.</li>
+          <li>Thêm một chip <b>tiến độ kỳ</b> cạnh dải filter: <code>Ngày 11/30 · 37% tháng</code>. Không có mốc này thì không ai biết % Spend 76% là nhanh hay chậm. (Số giả hiện tại cũng đang lệch: 11/30 ngày mà đã tiêu 76% budget tháng.)</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 4 MONTHLY -->
+    <article class="fix">
+      <header>
+        <span class="num">4</span>
+        <div class="t">
+          <span class="page">Monthly</span>
+          <h3>Default không phải MTD, và slicer Month sẽ bóp chart 11 tháng còn 1 cột</h3>
+        </div>
+      </header>
+      <div class="body">
+        <p class="why">Tiêu chí ghi “mặc định Month To Date”. Card đang ghi “T11 MTD” nhưng slicer lại mặc định <code>Tất cả (Jan – Nov)</code> — hai thứ nói ngược nhau. Quan trọng hơn: khi user chọn T11 trong slicer, chart “Register theo tháng” sẽ chỉ còn một cột T11, mất hết so sánh MoM. Đây là lỗi tương tác sẽ lộ ngay buổi demo đầu.</p>
+        <div class="cmp">
+          <div class="pane now">
+            <span class="cap">Hiện tại — chọn T11 là chart sập</span>
+            <div class="mini">
+              <div class="fbar">
+                <span class="fc"><b>Year</b> 2026</span>
+                <span class="fc"><b>Month</b> Tất cả (Jan – Nov)</span>
+                <span class="fc"><b>OS</b> Tất cả</span>
+              </div>
+              <div class="box">
+                <span class="ct">Register theo tháng vs Target</span>
+                <span class="cq">sau khi user chọn Month = T11</span>
+                <svg viewBox="0 0 220 86" role="img" aria-label="Chart tháng chỉ còn một cột sau khi lọc">
+                  <line class="gr" x1="22" y1="70" x2="214" y2="70"/>
+                  <line class="tg" style="stroke:var(--amber)" x1="22" y1="22" x2="214" y2="22"/>
+                  <rect x="104" y="34" width="22" height="36" fill="var(--green)" opacity=".85"/>
+                  <text x="106" y="80">T11</text>
+                  <text x="0" y="25">41K</text>
+                </svg>
+              </div>
+              <div class="ghost">Không còn gì để so MoM</div>
+            </div>
+          </div>
+          <div class="pane new">
+            <span class="cap">Đề xuất — slicer mặc định MTD, chart bỏ qua slicer Month</span>
+            <div class="mini">
+              <div class="fbar">
+                <span class="fc"><b>Year</b> 2026</span>
+                <span class="fc hi"><b>Month</b> T11 (MTD)</span>
+                <span class="fc"><b>OS</b> Tất cả</span>
+                <span class="fc"><b>Tiến độ</b> 11/30 ngày</span>
+              </div>
+              <div class="box">
+                <span class="ct">Register 12 tháng gần nhất vs Target</span>
+                <span class="cq">không chịu tác động của slicer Month · tháng đang xem được tô đậm</span>
+                <svg viewBox="0 0 220 86" role="img" aria-label="Chart 11 tháng, tháng hiện tại được tô đậm">
+                  <line class="gr" x1="22" y1="70" x2="214" y2="70"/>
+                  <line class="tg" style="stroke:var(--amber)" x1="22" y1="22" x2="214" y2="22"/>
+                  <rect x="26" y="44" width="12" height="26" fill="var(--green)" opacity=".4"/>
+                  <rect x="43" y="48" width="12" height="22" fill="var(--green)" opacity=".4"/>
+                  <rect x="60" y="41" width="12" height="29" fill="var(--green)" opacity=".4"/>
+                  <rect x="77" y="38" width="12" height="32" fill="var(--green)" opacity=".4"/>
+                  <rect x="94" y="39" width="12" height="31" fill="var(--green)" opacity=".4"/>
+                  <rect x="111" y="36" width="12" height="34" fill="var(--green)" opacity=".4"/>
+                  <rect x="128" y="33" width="12" height="37" fill="var(--green)" opacity=".4"/>
+                  <rect x="145" y="34" width="12" height="36" fill="var(--green)" opacity=".4"/>
+                  <rect x="162" y="31" width="12" height="39" fill="var(--green)" opacity=".4"/>
+                  <rect x="179" y="30" width="12" height="40" fill="var(--green)" opacity=".4"/>
+                  <rect x="196" y="36" width="12" height="34" fill="var(--green)"/>
+                  <text x="26" y="80">T1</text><text x="194" y="80">T11</text>
+                  <text x="0" y="25">41K</text>
+                </svg>
+              </div>
+              <div class="ghost">Card vẫn là T11 MTD vs PM cùng kỳ — chart là nền 12 tháng để đọc xu hướng</div>
+            </div>
+          </div>
+        </div>
+        <ul class="tight">
+          <li>Trong Power BI: <b>Edit interactions</b> cho slicer Month → None với 6 chart theo tháng, hoặc dùng measure bọc <code>ALL('Date'[Month])</code>. Nếu không, chart tháng và card MTD sẽ đánh nhau.</li>
+          <li>Nói rõ trên chart là <b>tháng đủ</b> còn card là <b>MTD vs PM cùng kỳ</b> — hiện hai cái đứng cạnh nhau mà không ghi khác grain, rất dễ bị hỏi “sao số T11 ở chart khác card”.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 5 CREATIVE -->
+    <article class="fix">
+      <header>
+        <span class="num">5</span>
+        <div class="t">
+          <span class="page">Creative</span>
+          <h3>“Hiệu quả nhất” mới đo bằng CPR, thiếu tầng trên và thiếu trend</h3>
+        </div>
+      </header>
+      <div class="body">
+        <p class="why">Page trả lời tốt vế “spend nhiều nhất”. Vế “hiệu quả nhất” mới có CPR — nhưng CPR là kết quả cuối, khi nó xấu thì không biết do creative không ai bấm (CTR) hay do giá hiển thị đắt (CPM) hay do landing. Doc metric đã xác nhận 3 platform đều trả <code>Ctr</code>, <code>Cpm</code>, <code>ThruPlay</code> — đủ để dựng. Ngoài ra chưa có trend, nên không thấy creative đang fatigue.</p>
+        <div class="cmp">
+          <div class="pane now">
+            <span class="cap">Hiện tại — scatter không mốc, bảng 2 metric</span>
+            <div class="mini">
+              <div class="box">
+                <span class="ct">Spending × CPR theo Ad</span>
+                <svg viewBox="0 0 220 110" role="img" aria-label="Scatter spending và CPR không có đường mốc">
+                  <line class="gr" x1="24" y1="92" x2="214" y2="92"/>
+                  <line class="gr" x1="24" y1="10" x2="24" y2="92"/>
+                  <circle cx="52" cy="34" r="3" fill="var(--blue)"/><circle cx="74" cy="62" r="3" fill="var(--blue)"/>
+                  <circle cx="96" cy="46" r="3" fill="var(--blue)"/><circle cx="118" cy="72" r="3" fill="var(--blue)"/>
+                  <circle cx="140" cy="28" r="3" fill="var(--blue)"/><circle cx="162" cy="58" r="3" fill="var(--blue)"/>
+                  <circle cx="184" cy="40" r="3" fill="var(--blue)"/><circle cx="196" cy="76" r="3" fill="var(--blue)"/>
+                  <text x="0" y="14">CPR</text><text x="170" y="104">Spending</text>
+                </svg>
+              </div>
+              <div class="mtw"><table class="mt">
+                <thead><tr><th>Ad</th><th class="n">Spending</th><th class="n">CPR</th><th class="n">Register</th></tr></thead>
+                <tbody>
+                  <tr><td>Ad_Hero_01</td><td class="n">$9,8K</td><td class="n">$1,02</td><td class="n">9.600</td></tr>
+                  <tr><td>Ad_Static_12</td><td class="n">$4,6K</td><td class="n">$1,58</td><td class="n">2.910</td></tr>
+                </tbody>
+              </table></div>
+            </div>
+          </div>
+          <div class="pane new">
+            <span class="cap">Đề xuất — scatter có 4 góc phần tư + cột CTR / CPM</span>
+            <div class="mini">
+              <div class="box">
+                <span class="ct">Spending × CPR theo Ad</span>
+                <span class="cq">vạch = CPR trung bình và Spending trung bình · size bong bóng = Register</span>
+                <svg viewBox="0 0 220 110" role="img" aria-label="Scatter với đường trung bình chia bốn góc phần tư">
+                  <line class="gr" x1="24" y1="92" x2="214" y2="92"/>
+                  <line class="gr" x1="24" y1="10" x2="24" y2="92"/>
+                  <line class="tg" style="stroke:var(--grey)" x1="24" y1="50" x2="214" y2="50"/>
+                  <line class="tg" style="stroke:var(--grey)" x1="120" y1="10" x2="120" y2="92"/>
+                  <rect x="120" y="10" width="94" height="40" fill="var(--red)" opacity=".09"/>
+                  <circle cx="52" cy="34" r="3" fill="var(--grey)"/><circle cx="74" cy="62" r="4" fill="var(--green)"/>
+                  <circle cx="96" cy="46" r="3" fill="var(--grey)"/><circle cx="118" cy="72" r="5" fill="var(--green)"/>
+                  <circle cx="140" cy="28" r="6" fill="var(--red)"/><circle cx="162" cy="58" r="5" fill="var(--green)"/>
+                  <circle cx="184" cy="40" r="7" fill="var(--red)"/><circle cx="196" cy="76" r="4" fill="var(--green)"/>
+                  <text x="126" y="20" style="fill:var(--red);font-weight:600">Tốn nhiều · CPR cao → xử lý trước</text>
+                  <text x="0" y="14">CPR</text><text x="170" y="104">Spending</text>
+                </svg>
+              </div>
+              <div class="mtw"><table class="mt">
+                <thead><tr><th>Ad</th><th class="n">Spend</th><th class="n">CPM</th><th class="n">CTR</th><th class="n">CPR</th><th>vs TB</th></tr></thead>
+                <tbody>
+                  <tr><td>Ad_Hero_01</td><td class="n">$9,8K</td><td class="n">$2,10</td><td class="n">2,4%</td><td class="n">$1,02</td><td><span class="pill g">−14%</span></td></tr>
+                  <tr><td>Ad_Static_12</td><td class="n">$4,6K</td><td class="n">$2,05</td><td class="n">0,9%</td><td class="n">$1,58</td><td><span class="pill r">+34%</span></td></tr>
+                </tbody>
+              </table></div>
+              <span class="cq">CPM ngang nhau, CTR 0,9% vs 2,4% → biết ngay CPR xấu là do creative, không phải do giá mua.</span>
+            </div>
+          </div>
+        </div>
+        <ul class="tight">
+          <li>Thêm cột <b>CPM, CTR, ThruPlay rate</b> vào bảng creative — ba cột này tách “creative kém” khỏi “đấu giá đắt”.</li>
+          <li>Thêm một chart <b>CPR theo ngày của top 5 Ad</b> để thấy fatigue: creative tốt tuần đầu, CPR bò lên dần là tín hiệu thay creative.</li>
+          <li>Page hiện chỉ dùng CPR nên mặc định là UA. Thêm slicer <b>Objective (UA / UE)</b> hoặc ghi rõ “Creative – UA” trên tiêu đề.</li>
+        </ul>
+      </div>
+    </article>
+  </section>
+
+  <hr>
+
+  <!-- ============ NICE TO HAVE ============ -->
+  <section class="sub">
+    <div class="secthead">
+      <h2>6 điểm nên bổ sung</h2>
+      <p>Không chặn việc build, nhưng làm được sớm thì report trả lời được thêm một tầng câu hỏi.</p>
+    </div>
+    <div class="tblw">
+      <table>
+        <thead><tr><th>Page</th><th>Bổ sung</th><th>Vì sao</th></tr></thead>
+        <tbody>
+          <tr><td><b>Daily - Simple</b></td><td>Thêm 2 dòng <code>Install</code> và <code>Register Rate</code> dưới nhóm UA</td><td>Register hụt 16% — hiện phải mở page khác mới biết do ít Install hay do Register Rate tụt. Hai dòng này giữ trọn chẩn đoán trong một màn hình, đúng mục đích “check nhanh”.</td></tr>
+          <tr><td><b>Daily - Detail</b></td><td>Thêm một dải bar <code>theo media source</code> cho mỗi objective</td><td>Hiện chỉ có breakdown theo campaign. Lệch một ngày thường là do một nguồn, nhìn nguồn trước rồi mới xuống campaign.</td></tr>
+          <tr><td><b>UA / UE - Summary</b></td><td>Thêm line <code>Register vs Target</code> và <code>Unique login C7+ vs Target</code></td><td>KR chính lại là chart duy nhất không có trend ở Summary (đang nằm ở Daily - Detail). Để 6 chart 3×2 thay vì 4.</td></tr>
+          <tr><td><b>UA / UE - Summary</b></td><td>Dải “Chỉ số phụ” thêm sparkline + <code>vs kỳ trước</code></td><td>5 ô R2 / R7 / Install / CPI / Register Rate hiện là số trần, không biết đang lên hay xuống.</td></tr>
+          <tr><td><b>UA / UE - Detail</b></td><td>Tách bảng “Theo ngày” 18 cột thành 2 bảng: <i>Cost &amp; Volume</i> và <i>Quality &amp; LTV</i></td><td>18 cột buộc scroll ngang, không ai đọc hết. Hoặc dùng field parameter cho user chọn nhóm metric.</td></tr>
+          <tr><td><b>UA / UE - Detail</b></td><td>Thêm breakdown <code>is_retarget</code> (Retarget vs Broad)</td><td><code>is_retarget</code> đang là slicer ở 4 page nhưng chưa có một visual nào tách theo nó — trong khi đây là ranh giới chính giữa cách chạy UA và UE.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>UE - Detail, nếu model có:</b> thêm <code>Reach</code> và <code>Frequency</code>. UE retarget churn user là tập nhỏ nên overlap rất cao — frequency bò lên là nguyên nhân CPA C7+ xấu đi trước khi nó hiện ra ở số login. Doc review metric đã cảnh báo đúng điểm này cho campaign UE.
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ============ MODEL DEPENDENCIES ============ -->
+  <section class="sub">
+    <div class="secthead">
+      <h2>Phụ thuộc model — chốt trước khi build</h2>
+      <p>Wireframe đã tự đánh dấu 2 mục. Danh sách đầy đủ sau khi review là 6.</p>
+    </div>
+    <div class="tblw">
+      <table>
+        <thead><tr><th>Cần có</th><th>Chặn page nào</th><th>Tình trạng</th></tr></thead>
+        <tbody>
+          <tr><td>Item <code>PM</code> + <code>MoM %</code> trong calc group <i>Time Intelligent</i></td><td>Monthly</td><td><span class="st wn">Đã duyệt DAX, chưa vào model</span></td></tr>
+          <tr><td>Item <code>PW</code> + <code>WoW %</code> (tuần trước, không phải L7D)</td><td>Weekly</td><td><span class="st bd">Chưa nêu trong wireframe</span></td></tr>
+          <tr><td><code>Budget</code> / <code>UTD Budget</code> cho Post Boosting</td><td>PB · OKR · Daily · Weekly · Monthly</td><td><span class="st bd">Chưa có — đang mâu thuẫn giữa các page</span></td></tr>
+          <tr><td><code>Benchmark</code> theo từng Objective (CPV / CPE / CPL)</td><td>PB</td><td><span class="st bd">Đang là 1 hằng số $0,050</span></td></tr>
+          <tr><td><code>creative_id</code> + <code>thumbnail</code></td><td>Creative</td><td><span class="st bd">Model hiện không còn cột — cần xin lại</span></td></tr>
+          <tr><td>Bảng Post Boosting nối được với bảng <code>Date</code></td><td>PB · mọi page có PB</td><td><span class="st wn">Cần xác nhận</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <b>Nhắc lại từ review metric cột A:</b> <code>CostPerInstall</code> thực tế vẫn chưa có trong cột A, trong khi UA là loại campaign chạy nhiều nhất và CPI xuất hiện ở UA - Summary, UA - Detail và bảng “Theo ngày”. Chốt khoá join sang game DB trước, nếu không thì Register / CPR / Unique login trên toàn bộ wireframe này không có nguồn.
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ============ WHAT WORKS ============ -->
+  <section class="sub">
+    <div class="secthead">
+      <h2>Giữ nguyên</h2>
+      <p>Những chỗ bản này làm đúng, không nên sửa khi chỉnh các điểm trên.</p>
+    </div>
+    <ul class="tight">
+      <li><b>Bố cục 8 nhóm nav / 11 page</b> phủ đủ 7 tiêu chí, không thừa page nào.</li>
+      <li><b>Daily - Simple</b> là page tốt nhất: ba mốc so sánh (target, ngày liền trước, cùng thứ tuần trước) và cột “Nhận định” tách được hiệu ứng thứ trong tuần khỏi suy giảm thật. Nên giữ nguyên tắc này khi làm Weekly.</li>
+      <li><b>Multi-card UA</b> (Actual lớn + hàng tham chiếu Budget / UTD / % Target) dùng lại thống nhất ở UE, PB, Monthly — form này đúng, chỉ cần PB cũng theo.</li>
+      <li><b>Mọi chart trục Y từ 0, target là nét đứt, màu cố định theo OS và media source.</b> Giữ quy ước này cho các chart thêm mới.</li>
+      <li><b>Slicer dạng nút đồng bộ theo từng khối</b> ở UA/UE - Detail — trang dài mà không phải cuộn ngược lên đầu.</li>
+      <li><b>Gom filter phụ vào “Bộ lọc nâng cao”</b> — giảm từ 19 slicer xuống còn một dải đọc được.</li>
+    </ul>
+  </section>
+
+</div>
